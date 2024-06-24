@@ -4,6 +4,8 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import imageTobase64 from "../helpers/imageTobase64";
+import summaryApi from "../common/index.js";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -13,7 +15,8 @@ const Signup = () => {
     password: "",
     name: "",
     confirmPassword: "",
-    profilePic: ""
+    profilePic: "",
+    phone: "",
   })
 
   const handleOnChange = (e) => {
@@ -41,9 +44,34 @@ const Signup = () => {
     })
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    if (data.password === data.confirmPassword) {
+      try {
+        const dataResponse = await fetch(summaryApi.signUp.url, {
+          method: summaryApi.signUp.method,
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+  
+        if (!dataResponse.ok) {
+          throw new Error(`HTTP error! status: ${dataResponse.status}`);
+        }
+  
+        const dataApi = await dataResponse.json();
+        toast(dataApi.message)
+        console.log("data", dataApi);
+      } catch (error) {
+        console.error('Failed to fetch:', error);
+      }
+    } else {
+      console.log("please check password and confirm password");
+    }
+  };
+  
 
   console.log("login data: ", data)
   return (
@@ -77,6 +105,13 @@ const Signup = () => {
               <label>Email: </label>
               <div className="bg-slate-100 p-2">
                 <input type="email" placeholder="Enter your email" id="email" name="email" value={data.email} className="w-full h-full outline-none bg-transparent p-2" onChange={handleOnChange}/>
+              </div>
+            </div>
+            
+            <div className="grid">
+              <label>Phone: </label>
+              <div className="bg-slate-100 p-2">
+                <input type="number" placeholder="Enter your number" id="phone" name="phone" value={data.phone} className="w-full h-full outline-none bg-transparent p-2" onChange={handleOnChange}/>
               </div>
             </div>
 
