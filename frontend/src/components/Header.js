@@ -4,8 +4,38 @@ import { GrSearch } from "react-icons/gr"
 import { FaUserAlt } from "react-icons/fa"
 import { PiShoppingCartSimpleFill } from "react-icons/pi"
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import summaryApi from '../common'
+import { toast } from 'react-toastify'
+import { setUserDetails } from '../store/userSlice'
 
 const Header = () => {
+    const user = useSelector(state => state?.user?.user)
+    const dispatch = useDispatch()
+
+    console.log("user header", user)
+
+    const handleLogout = async(e) => {
+        try {
+            const res = await fetch(summaryApi.logoutUser.url, {
+                method: summaryApi.logoutUser.method,
+                credentials: "include"
+            })
+
+            const dataRes = await res.json()
+
+            if(dataRes.success){
+                toast.success(dataRes.message)
+                dispatch(setUserDetails(null))
+            }
+
+            if(dataRes.error){
+                toast.error(dataRes.message)
+            }
+        } catch (error) {
+            console.error('Failed to fetch:', error);
+        }
+    }
   return (
     <header className='h-16 shadow-md bg-white'>
     <div className='h-full container mx-auto flex items-center px-4 justify-between'>
@@ -22,7 +52,15 @@ const Header = () => {
 
         <div className='flex items-center gap-4 sm:gap-6'>
             <div className='cursor-pointer text-3xl'>
-                <FaUserAlt />
+                {
+                    user?.profilePic ? 
+                    (
+                        <img src={user?.profilePic} className='w-10 h-10 rounded-full' alt={user.name}/>
+                    ) :
+                    (
+                        <FaUserAlt />
+                    )
+                }
             </div>
             <div className='cursor-pointer text-3xl relative'>
                 <span><PiShoppingCartSimpleFill /></span>
@@ -31,7 +69,14 @@ const Header = () => {
                 </div>
             </div>
             <div className=''>
-                <Link to="/login" className='px-3 py-1 pb-2 rounded-full text-white bg-slate-600 hover:bg-slate-800 font-bold'>Login</Link>
+                {
+                    user?._id ? 
+                    (
+                        <button onClick={handleLogout} className='px-3 py-1 pb-2 rounded-full text-white bg-slate-600 hover:bg-slate-800 font-bold'>Logout</button>
+                    ) : (
+                        <Link to="/login" className='px-3 py-1 pb-2 rounded-full text-white bg-slate-600 hover:bg-slate-800 font-bold'>Login</Link>
+                    )
+                }
             </div>
         </div>
 

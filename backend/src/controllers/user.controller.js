@@ -22,7 +22,9 @@ const generateAccessTokenAndRefreshToken = async(userId) => {
 
 // Register user
 const registerUser = asyncHandler( async (req,res) => {
-    const {name, email, password, profilePic, phone} = req.body;
+    try {
+        
+    const {name, email, password, phone} = req.body;
 
     if([name,email,password, phone].some((field)=> field?.trim() === "")){
         throw new ApiError(400, "All fields are required")
@@ -33,7 +35,11 @@ const registerUser = asyncHandler( async (req,res) => {
     })
 
     if(existedUser){
-        throw new ApiError(401, "user phone number and email is already existed")
+        if(existedUser.phone === phone){
+            throw new Error("user phone number is already existed")
+        }else if(existedUser.email === email){
+            throw new Error("email is already existed")
+        }
     }
 
     const profilePath = req.files?.profilePic[0]?.path;
@@ -68,76 +74,110 @@ const registerUser = asyncHandler( async (req,res) => {
     return res.status(201).json(
         new ApiResponse(200, createdUser, "user registered successfully")
     )
+    } catch (error) {
+     res.json(
+        // new ApiError(401, { message : error.message || error})
+        {
+            message: error.message || error,
+            error: true,
+            success: false
+        }
+     )       
+    }
 })
 
 // login user
 const loginUser = asyncHandler( async(req, res) => {
-    const {email, password} = req.body;
 
-    if(!email){
-        throw new ApiError(401, "please enter email")
-    }
+    try {
+        
+        const {email, password} = req.body;
 
-    const user = await User.findOne({email})
+        if(!email){
+            throw new Error("please enter valid email")
+        }
 
-    if(!user){
-        throw new ApiError(402, "user doesn't exist")
-    }
+        if(!password){
+            throw new Error("please enter password")
+        }
 
-    const isPasswordValid = await user.isPasswordCorrect(password)
+        const user = await User.findOne({email})
 
-    if(!isPasswordValid){
-        throw new ApiError(500, "password dosen't match")
-    }
+        if(!user){
+            throw new Error("User doesn't exist!")
+        }
 
-    const {accessToken, refreshToken} = await generateAccessTokenAndRefreshToken(user._id)
+        const isPasswordValid = await user.isPasswordCorrect(password)
 
-    const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
+        if(!isPasswordValid){
+            throw new Error("Password was wrong")
+        }
 
-    const option = {
-        httpOnly: true,
-        secure: true
-    }
+        const {accessToken, refreshToken} = await generateAccessTokenAndRefreshToken(user._id)
 
-    return res
-    .status(200)
-    .cookie("accessToken", accessToken, option)
-    .cookie("refreshToken", refreshToken, option)
-    .json(
-        new ApiResponse(
-            200,
-            {
-                user: loggedInUser, accessToken, refreshToken
-            },
-            "user logged in"
+        const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
+
+        const option = {
+            httpOnly: true,
+            secure: true
+        }
+
+        return res
+        .status(200)
+        .cookie("accessToken", accessToken, option)
+        .cookie("refreshToken", refreshToken, option)
+        .json(
+            new ApiResponse(
+                200,
+                {
+                    user: loggedInUser, accessToken, refreshToken
+                },
+                "Login Successfully!"
+            )
         )
-    )
+    } catch (error) {
+        res.json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
 })
 
 // logout user
 const logoutUser = asyncHandler(async(req, res) => {
-    await User.findByIdAndUpdate(
-        req.user._id,
-        {
-            $unset: {
-                refreshToken: 1 // this removes the field from document
+    try {
+   
+        await User.findByIdAndUpdate(
+            req.user._id,
+            {
+                $unset: {
+                    refreshToken: 1 // this removes the field from document
+                }
+            },
+            {
+                new: true
             }
-        },
-        {
-            new: true
+        )
+
+        const options = {
+            httpOnly: true,
+            secure: true
         }
-    )
 
-    const options = {
-        httpOnly: true,
-        secure: true
+        return res
+        .status(200)
+        .clearCookie("accessToken", options)
+        .clearCookie("refreshToken", options)
+        .json(new ApiResponse(200, {}, "User logged Out"))
+             
+    } catch (error) {
+        res.json({
+            message: "somthing went wrong while logout" || error,
+            error: true,
+            success: false
+        })
     }
-
-    return res
-    .status(200)
-    .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options)
-    .json(new ApiResponse(200, {}, "User logged Out"))
 })
 
 // refresh user's access token

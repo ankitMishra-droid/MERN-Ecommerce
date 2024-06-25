@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import loginIcon from "../assets/signup.gif";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import imageTobase64 from "../helpers/imageTobase64";
 import summaryApi from "../common/index.js";
 import { toast } from "react-toastify";
@@ -18,6 +18,8 @@ const Signup = () => {
     profilePic: "",
     phone: "",
   })
+
+  const navigate = useNavigate()
 
   const handleOnChange = (e) => {
     const {name, value} = e.target;
@@ -62,7 +64,14 @@ const Signup = () => {
         }
   
         const dataApi = await dataResponse.json();
-        toast(dataApi.message)
+
+        if(dataApi.success){
+          toast.success(dataApi.message)
+          navigate("/login")
+        }
+        if(dataApi.error){
+          toast.error(dataApi.message)
+        }
         console.log("data", dataApi);
       } catch (error) {
         console.error('Failed to fetch:', error);
