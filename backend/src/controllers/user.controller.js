@@ -24,11 +24,15 @@ const generateAccessTokenAndRefreshToken = async(userId) => {
 const registerUser = asyncHandler( async (req,res) => {
     try {
         
-    const {name, email, password, phone} = req.body;
+    const {name, email, password, phone, profilePic} = req.body;
 
     if([name,email,password, phone].some((field)=> field?.trim() === "")){
         throw new ApiError(400, "All fields are required")
     }
+
+    // if(!profilePic){
+    //     throw new Error("profile pic is required")
+    // }
 
     const existedUser = await User.findOne({
         $or: [{phone}, {email}]
@@ -60,7 +64,7 @@ const registerUser = asyncHandler( async (req,res) => {
         email,
         password,
         phone,
-        profilePic: profile.url
+        profilePic: profile?.url
     })
 
     const createdUser = await User.findById(user._id).select(
@@ -261,13 +265,15 @@ const getCuurentUser = asyncHandler( async (req, res) => {
 
 // update user's name, email, phone
 const updateDetails = asyncHandler( async(req, res) => {
-    const {name, email, phone} = req.body;
+    const { name, email, phone, role} = req.body;
+
+    // console.log(userId)
 
     const user = await User.findByIdAndUpdate(
         req.user?._id,
         {
             $set:{
-                name, phone, email: email
+                name: name, phone: phone, email: email, role: role
             }
         },
         {
@@ -277,7 +283,7 @@ const updateDetails = asyncHandler( async(req, res) => {
 
     return res
     .status(200)
-    .json( new ApiResponse(201, user, "account details updated successfully"))
+    .json( new ApiResponse(201, user, "User Details Updated!"))
 
 })
 export { registerUser, loginUser, logoutUser, refreshAccessToken, changePassword, getCuurentUser, updateDetails }

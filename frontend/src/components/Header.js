@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Logo from './Logo'
 import { GrSearch } from "react-icons/gr"
 import { FaUserAlt } from "react-icons/fa"
@@ -12,8 +12,9 @@ import { setUserDetails } from '../store/userSlice'
 const Header = () => {
     const user = useSelector(state => state?.user?.user)
     const dispatch = useDispatch()
+    const [menuDisplay, setMenuDisplay] = useState(false)
 
-    console.log("user header", user)
+    // console.log("user header", user)
 
     const handleLogout = async(e) => {
         try {
@@ -51,16 +52,29 @@ const Header = () => {
         </div>
 
         <div className='flex items-center gap-4 sm:gap-6'>
-            <div className='cursor-pointer text-3xl'>
+            <div className='relative flex justify-center' onClick={() => setMenuDisplay(preve => !preve)}>
+                <div className='cursor-pointer text-3xl'>
+                    {
+                        user?.profilePic ? 
+                        (
+                            <img src={user?.profilePic} className='w-10 h-10 rounded-full' alt={user.name}/>
+                        ) :
+                        (
+                            <FaUserAlt />
+                        )
+                    }
+                </div>
+
                 {
-                    user?.profilePic ? 
-                    (
-                        <img src={user?.profilePic} className='w-10 h-10 rounded-full' alt={user.name}/>
-                    ) :
-                    (
-                        <FaUserAlt />
+                    menuDisplay && (
+                        <div className='absolute bg-white bottom-0 top-11 p-2 h-fit shadow-lg rounded'>
+                            <nav>
+                                <Link to={"admin-panel"} className='whitespace-nowrap hover:text-orange-500'>Admin Panel</Link>
+                            </nav>
+                        </div>
                     )
                 }
+                
             </div>
             <div className='cursor-pointer text-3xl relative'>
                 <span><PiShoppingCartSimpleFill /></span>

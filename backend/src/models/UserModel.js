@@ -26,7 +26,7 @@ const userModel = new Schema({
         unique: true
     },
     role: { 
-        type: String, required: true, default:'user'
+        type: String,
     },
     addresses: { 
         type: [Schema.Types.Mixed] 
@@ -43,7 +43,7 @@ userModel.pre("save", async function(next){
     if(!this.isModified("password")) return next();
 
     this.password = await bcrypt.hash(this.password, 10);
-    this.role = "user"
+    this.role = "General"
     return next()
 })
 

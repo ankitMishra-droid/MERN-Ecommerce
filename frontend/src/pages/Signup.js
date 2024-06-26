@@ -36,7 +36,6 @@ const Signup = () => {
     const file = e.target.files[0]
 
     const imagePic = await imageTobase64(file);
-    console.log(imagePic)
 
     setData((preve) => {
       return{
@@ -72,17 +71,17 @@ const Signup = () => {
         if(dataApi.error){
           toast.error(dataApi.message)
         }
-        console.log("data", dataApi);
+        // console.log("data", dataApi);
       } catch (error) {
-        console.error('Failed to fetch:', error);
+        toast.error('Failed to fetch:', error);
       }
     } else {
-      console.log("please check password and confirm password");
+      toast.error("please check password and confirm password");
     }
   };
   
 
-  console.log("login data: ", data)
+  // console.log("login data: ", data)
   return (
     <section id="signup">
       <div className="mx-auto p-5 container">

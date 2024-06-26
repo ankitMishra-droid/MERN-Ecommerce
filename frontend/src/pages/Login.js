@@ -50,10 +50,10 @@ const Login = () => {
     if(dataApi.error){
       toast.error(dataApi.message)
     }
-    console.log("data", dataApi)
+    // console.log("data", dataApi)
   }
 
-  console.log("login data: ", data)
+  // console.log("login data: ", data)
 
   return (
     <section id="login">
