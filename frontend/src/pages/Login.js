@@ -90,7 +90,9 @@ const Login = () => {
               <Link to={"/forgot-password"} className="block w-fit ml-auto hover:underline hover:text-orange-500">Forgot Password</Link>
             </div>
 
-            <button className="w-full max-w-[150px] px-6 py-2 bg-slate-600 hover:scale-110 transition-all mx-auto block mt-8 text-white rounded-full">Login</button>
+            <div className="flex justify-center items-center mt-8">
+              <button className="w-full max-w-[150px] px-6 py-2 btn-24 transition-all mx-auto block mt-8">Login</button>
+            </div>
           </form>
           
           <p className="my-5">Don't have an account? <Link to={"/signup"} className="text-orange-500 hover:text-orange-600 hover:underline">Sign Up</Link></p>

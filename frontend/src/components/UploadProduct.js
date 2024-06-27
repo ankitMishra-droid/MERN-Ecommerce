@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { IoCloseSharp } from "react-icons/io5";
 
 const UploadProduct = ({onClose}) => {
+    const [data, setData] = useState({
+        
+    })
   return (
     <div className='fixed w-full h-full bg-slate-200 bg-opacity-40 top-0 left-0 right-0 bottom-0 flex justify-center items-center'>
       <div className='bg-white p-4 rounded w-full max-w-2xl h-full max-h-[80%]'>

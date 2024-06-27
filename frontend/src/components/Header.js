@@ -98,9 +98,9 @@ const Header = () => {
                 {
                     user?._id ? 
                     (
-                        <button onClick={handleLogout} className='px-3 py-1 pb-2 rounded-md bg-amber-500 transition-all duration-500 hover:bg-amber-600 font-semibold text-white'>Logout</button>
+                        <button onClick={handleLogout} className='px-3 py-1 pb-2 rounded-md btn-24 transition-all duration-500  font-semibold text-white'>Logout</button>
                     ) : (
-                        <Link to="/login" className='px-3 py-1 pb-2 rounded-full text-white bg-slate-600 hover:bg-slate-800 font-bold'>Login</Link>
+                        <Link to="/login" className='btn-24'>Login</Link>
                     )
                 }
             </div>

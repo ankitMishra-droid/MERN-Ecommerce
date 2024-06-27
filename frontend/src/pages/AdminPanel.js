@@ -2,20 +2,20 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { FaUserAlt } from "react-icons/fa";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-// import ROLE from '../common/role'
+import ROLE from '../common/role'
 import { PiUsersThreeFill } from "react-icons/pi";
 import { AiFillProduct } from "react-icons/ai";
 
 const AdminPanel = () => {
   const user = useSelector((state) => state?.user?.user);
 
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
-  // useEffect(() => {
-  //   if(user?.role !== ROLE.ADMIN && user?.role !== ROLE.EMPLOYEE){
-  //     navigate("/")
-  //   }
-  // },[user])
+  useEffect(() => {
+    if(user?.role !== ROLE.ADMIN && user?.role !== ROLE.EMPLOYEE){
+      navigate("/")
+    }
+  },[user])
   return (
     <div className="min-h-[calc(100vh-120px)] md:flex hidden">
       <aside className="bg-white min-h-full w-full max-w-60 customShadow ">
