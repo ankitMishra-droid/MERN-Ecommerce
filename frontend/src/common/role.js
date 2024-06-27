@@ -1,6 +1,7 @@
 const ROLE = {
      ADMIN: "ADMIN",
-     USER: "GENERAL"
+     USER: "GENERAL",
+     EMPLOYEE: "EMPLOYEE"
 }
 
 export default ROLE

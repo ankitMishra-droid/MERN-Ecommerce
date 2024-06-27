@@ -265,12 +265,17 @@ const getCuurentUser = asyncHandler( async (req, res) => {
 
 // update user's name, email, phone
 const updateDetails = asyncHandler( async(req, res) => {
-    const { name, email, phone, role} = req.body;
 
-    // console.log(userId)
+    const { name, email, phone, role } = req.body;
 
-    const user = await User.findByIdAndUpdate(
-        req.user?._id,
+    const userId = req.user?._id;
+
+    const user = await User.findById(userId)
+
+    // console.log("userId: ", userId, user.role)
+    const updateUser = await User.findByIdAndUpdate(
+        // req.user?._id,
+        userId,
         {
             $set:{
                 name: name, phone: phone, email: email, role: role
@@ -283,7 +288,7 @@ const updateDetails = asyncHandler( async(req, res) => {
 
     return res
     .status(200)
-    .json( new ApiResponse(201, user, "User Details Updated!"))
+    .json( new ApiResponse(201, updateUser, "User Details Updated!"))
 
 })
 export { registerUser, loginUser, logoutUser, refreshAccessToken, changePassword, getCuurentUser, updateDetails }

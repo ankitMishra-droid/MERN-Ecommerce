@@ -23,7 +23,7 @@ const summaryApi = {
     },
     editUserDetails: {
         url: `${backendDomain}/api/users/update-profile`,
-        method: "post"
+        method: "PATCH"
     }
 }
 

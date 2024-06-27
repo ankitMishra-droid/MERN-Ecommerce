@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import summaryApi from '../common'
 import { toast } from 'react-toastify'
 import { setUserDetails } from '../store/userSlice'
+import ROLE from '../common/role'
 
 const Header = () => {
     const user = useSelector(state => state?.user?.user)
@@ -39,39 +40,50 @@ const Header = () => {
     }
   return (
     <header className='h-16 shadow-md bg-white'>
-    <div className='h-full container mx-auto flex items-center px-4 justify-between'>
+    <div className='h-full container mx-auto flex items-center px-4 justify-between sticky'>
         <div className=''>
             <Link to="/"><Logo w={90} h={50}/></Link>
         </div>
 
         <div className='hidden lg:flex items-center w-full justify-between max-w-sm border rounded-full pl-2 focus-within:shadow'>
             <input type='text' className='w-full outline-none' placeholder='search product here...'/>
-            <div className='text-lg min-w-[50px] h-8 bg-slate-600 flex items-center justify-center rounded-r-full text-white cursor-pointer'>
+            <div className='text-lg min-w-[50px] h-8 bg-gray-900 flex items-center justify-center rounded-r-full text-white cursor-pointer'>
                 <GrSearch />
             </div>
         </div>
 
         <div className='flex items-center gap-4 sm:gap-6'>
             <div className='relative flex justify-center' onClick={() => setMenuDisplay(preve => !preve)}>
-                <div className='cursor-pointer text-3xl'>
-                    {
-                        user?.profilePic ? 
-                        (
-                            <img src={user?.profilePic} className='w-10 h-10 rounded-full' alt={user.name}/>
-                        ) :
-                        (
-                            <FaUserAlt />
-                        )
-                    }
-                </div>
+                {
+                    user?._id && (
+                        <div className='cursor-pointer text-3xl'>
+                            {
+                                user?.profilePic ? 
+                                (
+                                    <img src={user?.profilePic} className='w-10 h-10 rounded-full' alt={user.name}/>
+                                ) :
+                                (
+                                    <FaUserAlt />
+                                )
+                            }
+                        </div>
+                    )
+                }
 
                 {
                     menuDisplay && (
-                        <div className='absolute bg-white bottom-0 top-11 p-2 h-fit shadow-lg rounded'>
-                            <nav>
-                                <Link to={"admin-panel"} className='whitespace-nowrap hover:text-orange-500'>Admin Panel</Link>
-                            </nav>
-                        </div>
+                        <>
+                            {
+                                    (user?.role === ROLE.ADMIN || user?.role === ROLE.EMPLOYEE) && (
+                                        <div className='absolute bg-white bottom-0 top-11 p-2 h-fit shadow-lg rounded'>
+                                            <nav>
+                                                <Link to={"admin-panel/all-products"} className='whitespace-nowrap hover:text-orange-500'>Admin Panel</Link>
+                                            </nav>
+                                        </div>
+                                    )
+                            }
+                        </>
+                        
                     )
                 }
                 
@@ -86,7 +98,7 @@ const Header = () => {
                 {
                     user?._id ? 
                     (
-                        <button onClick={handleLogout} className='px-3 py-1 pb-2 rounded-full text-white bg-slate-600 hover:bg-slate-800 font-bold'>Logout</button>
+                        <button onClick={handleLogout} className='px-3 py-1 pb-2 rounded-md bg-amber-500 transition-all duration-500 hover:bg-amber-600 font-semibold text-white'>Logout</button>
                     ) : (
                         <Link to="/login" className='px-3 py-1 pb-2 rounded-full text-white bg-slate-600 hover:bg-slate-800 font-bold'>Login</Link>
                     )

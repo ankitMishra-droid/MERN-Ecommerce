@@ -5,13 +5,24 @@ import summaryApi from "../common";
 import { toast } from "react-toastify";
 
 const ChangeUserRole = ({
-    name, email, role, onClose
+    name, email, role, onClose, userId, callFunc
 }) => {
-  const [userRole, setUserRole] = useState("")
+  const [userRole, setUserRole] = useState(role)
+  const [updateData, setUpdateData] = useState({
+    name : name,
+    email : email
+  })
 
   const handleChangeUserRole = (e) => {
     setUserRole(e.target.value)
     console.log(e.target.value)
+  }
+
+  const handleUpdateUserData = (e) => {
+    setUpdateData((prevData) => ({
+      ...prevData,
+      [e.target.name] : e.target.value
+    }))
   }
 
   const updateUserDetails = async(e) => {
@@ -22,7 +33,10 @@ const ChangeUserRole = ({
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            role : userRole
+            userId : userId, 
+            role : userRole,
+            name : updateData.name,
+            email: updateData.email
         })
     })
 
@@ -30,6 +44,8 @@ const ChangeUserRole = ({
 
     if(responseData.success){
         toast.success(responseData.message)
+        onClose()
+        callFunc()
     }
     console.log("responseData: ", responseData)
   }
@@ -46,12 +62,28 @@ const ChangeUserRole = ({
 
             <h1 className="text-lg font-medium pb-2">Change User Role</h1>
 
-            <p>Name: {name}</p>
-            <p>Email: {email}</p>
+            <p>Name: {name} 
+            <input 
+              type="text" 
+              value={updateData.name} 
+              name="name"
+              onChange={handleUpdateUserData} 
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+            </p>
+            <p>Email: {email} 
+            <input 
+              type="email" 
+              name="email"
+              value={updateData.email} 
+              onChange={handleUpdateUserData} 
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+            </p>
 
             <div className="flex justify-between my-4">
               <p>Role: </p>
-              <select className="px-4 py-1 border" value={userRole} onChange={handleChangeUserRole}>
+              <select className="px-4 py-1 border" defaultValue={ROLE.USER} value={userRole} onChange={handleChangeUserRole}>
                 {Object.values(ROLE).map((el) => {
                   return (
                     <option value={el} key={el}>
