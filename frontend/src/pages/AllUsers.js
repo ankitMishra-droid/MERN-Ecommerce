@@ -86,17 +86,17 @@ const AllUsers = () => {
         )
       }
       {
-                    closeUser && (
-                        <ChangeUserRole onClose={() => 
-                            setCloseUser(false)}
-                            name={updateUser.name}
-                            email={updateUser.email}
-                            role={updateUser.role}
-                            userId={updateUser._id}
-                            callFunc={fetchAllUser}
-                        />       
-                    )
-                }
+            closeUser && (
+                <ChangeUserRole onClose={() => 
+                    setCloseUser(false)}
+                    name={updateUser.name}
+                    email={updateUser.email}
+                    role={updateUser.role}
+                    userId={updateUser._id}
+                    callFunc={fetchAllUser}
+                />       
+            )
+        }
     </div>
   )
 }

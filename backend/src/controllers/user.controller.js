@@ -275,7 +275,7 @@ const updateDetails = asyncHandler( async(req, res) => {
     // console.log("userId: ", userId, user.role)
     const updateUser = await User.findByIdAndUpdate(
         // req.user?._id,
-        userId,
+        user,
         {
             $set:{
                 name: name, phone: phone, email: email, role: role

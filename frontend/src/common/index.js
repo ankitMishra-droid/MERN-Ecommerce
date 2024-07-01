@@ -24,6 +24,18 @@ const summaryApi = {
     editUserDetails: {
         url: `${backendDomain}/api/users/update-profile`,
         method: "PATCH"
+    },
+    uploadProduct: {
+        url : `${backendDomain}/api/users/upload-product`,
+        method: "POST"
+    },
+    getAllProduct: {
+        url : `${backendDomain}/api/users/get-products`,
+        method: "GET"
+    },
+    updateProduct: {
+        url : `${backendDomain}/api/users/update-product`,
+        method: "PATCH"
     }
 }
 
