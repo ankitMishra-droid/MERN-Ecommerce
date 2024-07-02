@@ -7,7 +7,7 @@ const AdminProductCard = ({ data, fetchdata }) => {
     const [editProduct, setEditProduct] = useState(false)
   return (
     <div className='bg-gray-200 p-4 rounded'>
-        <div className='w-44'>
+        <div className='w-44 relative'>
             <div className='w-32 h-32 flex justify-center items-center mx-auto'>
                 <img src={data?.productImg[0]} className='object-fill h-full mx-auto' alt="productImage"/>
             </div>
@@ -36,7 +36,12 @@ const AdminProductCard = ({ data, fetchdata }) => {
             <div className='w-fit cursor-pointer ml-auto p-2 text-white bg-gray-900 hover:bg-gray-800 transition-all rounded-full' onClick={() => setEditProduct(true)}>
                 <MdEdit />
             </div>
-
+            
+            <div className='absolute w-10 h-10 rounded-full bg-orange-500 -top-8 -right-8 flex items-center justify-center text-sm text-white'>
+                <p className='text-center'>{
+                    Math.round((data.productPrice-data.selling)/(data.productPrice) * 100)
+                }</p><span>%</span>
+            </div>
         </div>
         {
             editProduct && (

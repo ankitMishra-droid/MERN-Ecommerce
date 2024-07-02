@@ -44,7 +44,9 @@ const AllProducts = () => {
       {
         allProduct.map((product, index) => {
           return(
+            <>
             <AdminProductCard data={product} key={index+"allProduct"} fetchdata={fetchAllProduct}/>
+            </>
           )
         })
       }
@@ -56,6 +58,7 @@ const AllProducts = () => {
           <UploadProduct onClose={() => setOpenUploadProduct(false)} fetchData={fetchAllProduct}/>
         )
     }
+
     </>
   )
 }

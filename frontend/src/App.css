@@ -15,6 +15,10 @@
     @apply border text-base text-center
 }
 
+.scrollbar-none::-webkit-scrollbar{
+  display: none;
+}
+
 .btn-24,
 .btn-24 *,
 .btn-24 :after,
