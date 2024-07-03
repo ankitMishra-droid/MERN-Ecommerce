@@ -110,4 +110,21 @@ const getCategoryProduct = asyncHandler( async(req, res) => {
     }
 })
 
-export { uploadProduct, getAllProducts, updateProductDetails, getCategoryProduct }
+const getCategoryWiseProduct = asyncHandler( async(req, res) => {
+    try {
+        const { category } = req?.body || req?.query
+        const productCategory = await Product.find({ category })
+
+        res.status(200).json(
+            new ApiResponse(201, productCategory, "Product Category wise fetched!")
+        )
+    } catch (error) {
+        res.status(401).json({
+            message: error?.message || error,
+            error: true,
+            success: false
+        })
+    }
+})
+
+export { uploadProduct, getAllProducts, updateProductDetails, getCategoryProduct, getCategoryWiseProduct }

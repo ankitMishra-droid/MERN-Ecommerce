@@ -38,9 +38,11 @@ function App() {
     <Context.Provider value={{
       fetchCurrentUserDetail // fetch user detail
     }}>
-      <ToastContainer />
+      <ToastContainer 
+        position='top-center'
+      />
       <Header />
-      <main className='min-h-[calc(100vh-177px)] md:min-h-[calc(100vh-120px)]'>
+      <main className='min-h-[calc(100vh-177px)] md:min-h-[calc(100vh-120px)] flex justify-center'>
         <Outlet />
       </main>
       <Footer />

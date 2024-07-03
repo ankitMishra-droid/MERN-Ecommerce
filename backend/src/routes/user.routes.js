@@ -3,7 +3,7 @@ import { upload } from "../middleware/multer.middleware.js";
 import { changePassword, getCuurentUser, loginUser, logoutUser, refreshAccessToken, registerUser, updateDetails } from "../controllers/users/user.controller.js";
 import { verifyJwt } from "../middleware/auth.middleware.js";
 import fetchAllUsers from "../controllers/users/allUsersController.js";
-import { getAllProducts, getCategoryProduct, updateProductDetails, uploadProduct } from "../controllers/product/uploadProduct.controller.js";
+import { getAllProducts, getCategoryProduct, getCategoryWiseProduct, updateProductDetails, uploadProduct } from "../controllers/product/uploadProduct.controller.js";
 
 const router = Router()
 
@@ -19,4 +19,5 @@ router.route("/upload-product").post(verifyJwt, uploadProduct)
 router.route("/get-products").get(getAllProducts)
 router.route("/update-product").patch(updateProductDetails)
 router.route("/get-category").get(getCategoryProduct)
+router.route("/categorywise-product").post(getCategoryWiseProduct)
 export default router;
