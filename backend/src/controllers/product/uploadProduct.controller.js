@@ -127,4 +127,22 @@ const getCategoryWiseProduct = asyncHandler( async(req, res) => {
     }
 })
 
-export { uploadProduct, getAllProducts, updateProductDetails, getCategoryProduct, getCategoryWiseProduct }
+const getProductDetails = asyncHandler( async(req,res) => {
+    try {
+        const { productId } = req.body
+
+        const product = await Product.findById(productId)
+
+        res.status(200).json(
+            new ApiResponse(201, product, "Product Details Fetched!")
+        )
+    } catch (error) {
+        res.status(401).json({
+            message: error?.message || error,
+            error: true,
+            success: false
+        })
+    }
+})
+
+export { uploadProduct, getAllProducts, updateProductDetails, getCategoryProduct, getCategoryWiseProduct, getProductDetails }
