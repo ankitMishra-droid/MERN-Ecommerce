@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Outlet } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
@@ -42,7 +43,7 @@ function App() {
         position='top-center'
       />
       <Header />
-      <main className='min-h-[calc(100vh-177px)] md:min-h-[calc(100vh-120px)] pl-20 pr-20 pt-16'>
+      <main className='min-h-[calc(100vh-177px)] md:min-h-[calc(100vh-120px)] md:pl-20 md:pr-20 pt-16'>
         <Outlet />
       </main>
       <Footer />

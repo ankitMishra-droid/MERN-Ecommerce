@@ -4,6 +4,7 @@ import { changePassword, getCuurentUser, loginUser, logoutUser, refreshAccessTok
 import { verifyJwt } from "../middleware/auth.middleware.js";
 import fetchAllUsers from "../controllers/users/allUsersController.js";
 import { getAllProducts, getCategoryProduct, getCategoryWiseProduct, getProductDetails, updateProductDetails, uploadProduct } from "../controllers/product/uploadProduct.controller.js";
+import addToCartProduct from "../controllers/users/addToCart.js";
 
 const router = Router()
 
@@ -21,5 +22,6 @@ router.route("/update-product").patch(updateProductDetails)
 router.route("/get-category").get(getCategoryProduct)
 router.route("/categorywise-product").post(getCategoryWiseProduct)
 router.route("/product-details").post(getProductDetails)
+router.route("/add-to-cart").post(verifyJwt, addToCartProduct)
 
 export default router;

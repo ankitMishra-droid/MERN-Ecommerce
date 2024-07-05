@@ -145,4 +145,5 @@ const getProductDetails = asyncHandler( async(req,res) => {
     }
 })
 
+
 export { uploadProduct, getAllProducts, updateProductDetails, getCategoryProduct, getCategoryWiseProduct, getProductDetails }

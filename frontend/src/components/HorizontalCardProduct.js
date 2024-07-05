@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable jsx-a11y/heading-has-content */
 import React, { useEffect, useRef, useState } from 'react'
 import fetchCategorywiseProduct from '../helpers/fetchCategorywiseProduct'
 import displayCurrency from '../helpers/displayCurrency'
@@ -12,7 +14,7 @@ const HorizontalCardProduct = ({ category, heading }) => {
     const [loading, setLoading] = useState(false)
     const loadingList = new Array(12).fill(null)
 
-    const [scroll, setScroll] = useState(0)
+    // const [scroll, setScroll] = useState(0)
     const scrollElement = useRef()
 
     const fetchData = async() => {
@@ -67,7 +69,7 @@ const HorizontalCardProduct = ({ category, heading }) => {
                         <Link to={"product/"+product?._id} className='md:max-w-[300px] min-w-[280px] md:min-w-[320px] md:h-36 h-auto shandow mt-10 mb-10 flex w-full max-w-xs relative overflow-hidden rounded-lg border border-gray-100 md:bg-white bg-slate-200 flex-col md:flex-row shadow-md' key={product?._id+index}>
                             <span className="absolute z-10 top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">{Math.round((product?.productPrice - product?.selling)/(product?.productPrice) * 100 )}% OFF</span>
                             <div className='bg-slate-200 h-full p-2 min-w-[120px] md:min-w-[145px]'>
-                                <img src={product?.productImg[0]} className='object-scale-down h-full hover:scale-110 transition-all' alt={product?.productImg + index}/>
+                                <img src={product?.productImg[0]} className='object-scale-down h-full hover:scale-110 transition-all mix-blend-multiply' alt={product?.productImg + index}/>
                             </div>
                             <div className='p-4 flex flex-col justify-center items-center md:items-start'>
                                 <h2 className='font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black'>{product?.productName}</h2>
