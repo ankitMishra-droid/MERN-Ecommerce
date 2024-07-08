@@ -18,7 +18,7 @@ const uploadProduct = asyncHandler( async(req,res) => {
         }
         const saveProduct = await uploadProductDetails.save()
 
-        res.status(201).json(
+        return res.status(201).json(
             new ApiResponse(201, saveProduct, "Product uploaded!")
         )
     } catch (error) {
@@ -34,7 +34,7 @@ const getAllProducts = asyncHandler( async(req, res) => {
     try {
         const getProduct = await Product.find().sort({ createdAt: -1 }) 
 
-        res.status(201).json(
+        return res.status(201).json(
             new ApiResponse(201, getProduct, "All product fetched")
         )
     } catch (error) {
@@ -97,7 +97,7 @@ const getCategoryProduct = asyncHandler( async(req, res) => {
             }
         }
 
-        res.status(200).json(
+        return res.status(200).json(
             new ApiResponse(201, productByCategory, "category product list")
         )
         
@@ -115,7 +115,7 @@ const getCategoryWiseProduct = asyncHandler( async(req, res) => {
         const { category } = req?.body || req?.query
         const productCategory = await Product.find({ category })
 
-        res.status(200).json(
+        return res.status(200).json(
             new ApiResponse(201, productCategory, "Product Category wise fetched!")
         )
     } catch (error) {
@@ -133,7 +133,7 @@ const getProductDetails = asyncHandler( async(req,res) => {
 
         const product = await Product.findById(productId)
 
-        res.status(200).json(
+        return res.status(200).json(
             new ApiResponse(201, product, "Product Details Fetched!")
         )
     } catch (error) {

@@ -5,11 +5,14 @@ import { Link } from 'react-router-dom'
 // import scrollTop from '../helpers/scrollTop'
 import fetchCategorywiseProduct from '../helpers/fetchCategorywiseProduct'
 import displayCurrency from '../helpers/displayCurrency'
+import Context from '../context'
+import addToCart from '../helpers/addToCart'
 
 const CategroyWiseProduct = ({category, heading}) => {
-    const [data,setData] = useState([])
+    const [data, setData] = useState([])
     const [loading,setLoading] = useState(true)
     const loadingList = new Array(13).fill(null)
+    const { fetchAddToCartCount } = useContext(Context)
 
     // const { fetchUserAddToCart } = useContext(Context)
 
@@ -17,18 +20,23 @@ const CategroyWiseProduct = ({category, heading}) => {
     //    await addToCart(e,id)
     //    fetchUserAddToCart()
     // }
+    
+    const handleCountUpdate = async(e, id) => {
+        await addToCart(e, id)
+        fetchAddToCartCount()
+    }
 
-    const fetchData = async() =>{
+    const fetchData = async() => {
+
         setLoading(true)
         const categoryProduct = await fetchCategorywiseProduct(category)
         setLoading(false)
-
         setData(categoryProduct?.data)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchData()
-    },[])
+    }, [])
 
 
 
@@ -74,7 +82,7 @@ const CategroyWiseProduct = ({category, heading}) => {
                                         <p className='text-slate-600 font-medium'>{ displayCurrency(product?.selling) }</p>
                                         <p className='text-slate-500 line-through'>{ displayCurrency(product?.productPrice)  }</p>
                                     </div>
-                                    <button className='text-sm bg-gray-800 hover:bg-gray-900 text-white px-3 py-0.5 rounded-full' onClick={()=>{}}>Add to Cart</button>
+                                    <button className='text-sm bg-gray-800 hover:bg-gray-900 text-white px-3 py-0.5 rounded-full' onClick={(e)=> handleCountUpdate(e,product?._id)}>Add to Cart</button>
                                 </div>
                             </Link>
                         )

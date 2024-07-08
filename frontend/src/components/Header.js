@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Logo from './Logo'
 import { GrSearch } from "react-icons/gr"
 import { FaUserAlt } from "react-icons/fa"
@@ -9,11 +9,13 @@ import summaryApi from '../common'
 import { toast } from 'react-toastify'
 import { setUserDetails } from '../store/userSlice'
 import ROLE from '../common/role'
+import Context from '../context'
 
 const Header = () => {
     const user = useSelector(state => state?.user?.user)
     const dispatch = useDispatch()
     const [menuDisplay, setMenuDisplay] = useState(false)
+    const context = useContext(Context)
 
     // console.log("user header", user)
 
@@ -38,6 +40,7 @@ const Header = () => {
             console.error('Failed to fetch:', error);
         }
     }
+
   return (
     <header className='h-16 shadow-md bg-white fixed w-full z-30'>
     <div className='h-full container mx-auto flex items-center px-4 justify-between sticky'>
@@ -88,12 +91,23 @@ const Header = () => {
                 }
                 
             </div>
-            <div className='cursor-pointer text-3xl relative'>
+            {/* <div className='cursor-pointer text-3xl relative'>
                 <span><PiShoppingCartSimpleFill /></span>
                 <div className='bg-orange-500 text-white w-5 h-5 p-1 rounded-full flex items-center justify-center absolute -top-1 -right-3'>
-                    <p className='text-sm'>0</p>
+                    <p className='text-sm'>{context?.cartProductCount}</p>
                 </div>
-            </div>
+            </div> */}
+            {
+                     user?._id && (
+                      <Link to={"/cart"} className='text-2xl relative'>
+                          <span><PiShoppingCartSimpleFill /></span>
+      
+                          <div className='bg-orange-500 text-white w-5 h-5 rounded-full p-1 flex items-center justify-center absolute -top-2 -right-3'>
+                              <p className='text-sm'>{context?.cartProductCount}</p>
+                          </div>
+                      </Link>
+                      )
+                  }
             <div className=''>
                 {
                     user?._id ? 
