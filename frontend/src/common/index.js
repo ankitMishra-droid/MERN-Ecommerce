@@ -1,4 +1,4 @@
-const backendDomain = "http://localhost:5000";
+const backendDomain = "https://mern-ecommerce-api-pied.vercel.app";
 
 const summaryApi = {
     signUp : {
