@@ -1,17 +1,11 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
-// import addToCart from '../helpers/addToCart'
-// import Context from '../context'
-// import scrollTop from '../helpers/scrollTop'
-import fetchCategorywiseProduct from '../helpers/fetchCategorywiseProduct'
-import displayCurrency from '../helpers/displayCurrency'
-import Context from '../context'
+import React, { useContext } from 'react'
 import addToCart from '../helpers/addToCart'
+import Context from '../context'
+import { Link } from 'react-router-dom'
+import displayCurrency from '../helpers/displayCurrency'
 import ScrollToTop from '../helpers/ScrollToTop'
 
-const CategroyWiseProduct = ({category, heading}) => {
-    const [data, setData] = useState([])
-    const [loading,setLoading] = useState(true)
+const SearchProdctCard = ({ loading, data = []}) => {
     const loadingList = new Array(13).fill(null)
     const { fetchAddToCartCount } = useContext(Context)
 
@@ -19,29 +13,9 @@ const CategroyWiseProduct = ({category, heading}) => {
         await addToCart(e, id)
         fetchAddToCartCount()
     }
-
-    const fetchData = async() => {
-
-        setLoading(true)
-        const categoryProduct = await fetchCategorywiseProduct(category)
-        setLoading(false)
-        setData(categoryProduct?.data)
-    }
-
-    useEffect(() => {
-        fetchData()
-    }, [])
-
-
-
-
   return (
-    <div className='container mx-auto px-4 my-6 relative'>
-
-            <h2 className='text-2xl font-semibold py-4'>{heading}</h2>
-
-                
-           <div className='grid grid-cols-[repeat(auto-fit,minmax(300px,320px))] justify-between md:gap-6 overflow-x-scroll scrollbar-none transition-all'>
+    <div>
+      <div className='grid grid-cols-[repeat(auto-fit,minmax(300px,320px))] justify-center md:justify-between md:gap-6 overflow-x-scroll scrollbar-none transition-all'>
            {
 
                 loading ? (
@@ -85,10 +59,8 @@ const CategroyWiseProduct = ({category, heading}) => {
                 
             }
            </div>
-            
-
     </div>
   )
 }
 
-export default CategroyWiseProduct
+export default SearchProdctCard

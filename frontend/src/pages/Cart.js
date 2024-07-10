@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import summaryApi from "../common";
 import Context from "../context";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import displayCurrency from "../helpers/displayCurrency";
 
 const Cart = () => {
@@ -35,9 +36,85 @@ const Cart = () => {
     fetchProduct();
   }, []);
 
+  const handleIncreaseQuantity = async (id, qty) => {
+    const response = await fetch(summaryApi.updateCartItem.url, {
+      method: summaryApi.updateCartItem.method,
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        _id : id,
+        quantity: qty + 1,
+      }),
+    });
+
+    const dataResponse = await response.json();
+
+    if (dataResponse.success) {
+      fetchProduct();
+      toast.success(dataResponse.message);
+    }
+
+    if (dataResponse.error) {
+      toast.error(dataResponse.error);
+    }
+  };
+
+  const handleDecreaseQuantity = async (id, qty) => {
+    if (qty >= 2) {
+      const response = await fetch(summaryApi.updateCartItem.url, {
+        method: summaryApi.updateCartItem.method,
+        credentials: "include",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          _id : id,
+          quantity: qty - 1,
+        }),
+      });
+
+      const dataResponse = await response.json();
+
+      if (dataResponse.success) {
+        fetchProduct();
+        toast.success(dataResponse.message);
+      }
+
+      if (dataResponse.error) {
+        toast.error(dataResponse.error);
+      }
+    }
+  };
+
+  const handleRemoveProduct = async(id) => {
+    const response = await fetch(summaryApi.deleteCartItem.url, {
+      method: summaryApi.deleteCartItem.method,
+      credentials: "include",
+      headers: {
+        "content-type" : 'application/json'
+      },
+      body: JSON.stringify({
+        _id: id
+      })
+    })
+
+    const dataResponse = await response.json()
+
+    if(dataResponse.success){
+      fetchProduct()
+      context.fetchAddToCartCount()
+      toast.success(dataResponse.message)
+    }
+
+    if(dataResponse.error){
+      toast.success(dataResponse.error)
+    }
+  }
   const handleSubtotal = data.reduce((acc, product) => {
-    return acc + (product?.productId?.selling || 0) * (product?.quantity || 1)
-  }, 0)
+    return acc + (product?.productId?.selling || 0) * (product?.quantity || 1);
+  }, 0);
   return (
     <div className="conatiner mx-auto p-1 mb-2 lg:mb-5">
       <div
@@ -45,7 +122,7 @@ const Cart = () => {
       "
       >
         {data.length === 0 && !loading && (
-          <p className="bg-white py-5">No Data</p>
+          <p className="bg-white py-5">Cart is Empty!</p>
         )}
       </div>
 
@@ -57,8 +134,7 @@ const Cart = () => {
                   <div
                     key={el + index + "Add Product"}
                     className="w-full bg-slate-200 h-32 my-1 animate-pulse"
-                  >
-                  </div>
+                  ></div>
                 );
               })
             : data.map((product, index) => {
@@ -102,17 +178,35 @@ const Cart = () => {
                       </div>
                       <div className="flex flex-1 items-end justify-between text-sm">
                         <div className="flex items-center border-gray-100">
-                          <button className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-indigo-500 hover:text-blue-50">
+                          <button
+                            id="decreaseBtn"
+                            className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-indigo-500 hover:text-blue-50"
+                            onClick={() =>
+                              handleDecreaseQuantity(
+                                product?._id,
+                                product?.quantity
+                              )
+                            }
+                          >
                             {" "}
                             -{" "}
                           </button>
-                          <input
+                          {/* <input
                             type="text"
                             className="h-8 w-8 border bg-white text-center text-xs outline-none"
                             value={product?.quantity}
                             onChange={() => {}}
-                          />
-                          <button className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-indigo-500 hover:text-blue-50">
+                          /> */}
+                          <span className="bg-white text-center text-xs outline-none pl-2 pr-2">{product?.quantity}</span>
+                          <button
+                            className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-indigo-500 hover:text-blue-50"
+                            onClick={() =>
+                              handleIncreaseQuantity(
+                                product?._id,
+                                product?.quantity
+                              )
+                            }
+                          >
                             {" "}
                             +{" "}
                           </button>
@@ -122,6 +216,7 @@ const Cart = () => {
                           <button
                             type="button"
                             className="font-medium text-indigo-600 hover:text-indigo-500"
+                            onClick={() => handleRemoveProduct(product?._id)}
                           >
                             Remove
                           </button>
@@ -140,7 +235,9 @@ const Cart = () => {
             <div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 w-full">
               <div className="mb-2 flex justify-between">
                 <p className="text-gray-700">Subtotal</p>
-                <p className="text-gray-700">{displayCurrency(handleSubtotal)}</p>
+                <p className="text-gray-700">
+                  {displayCurrency(handleSubtotal)}
+                </p>
               </div>
               <div className="flex justify-between">
                 <p className="text-gray-700">Shipping</p>
@@ -150,7 +247,9 @@ const Cart = () => {
               <div className="flex justify-between">
                 <p className="text-lg font-bold">Total</p>
                 <div className="">
-                  <p className="mb-1 text-lg font-bold">{displayCurrency(handleSubtotal + 250)}</p>
+                  <p className="mb-1 text-lg font-bold">
+                    {displayCurrency(handleSubtotal + 250)}
+                  </p>
                   <p className="text-sm text-gray-700">including GST</p>
                 </div>
               </div>

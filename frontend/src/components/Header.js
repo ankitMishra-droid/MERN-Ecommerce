@@ -3,7 +3,7 @@ import Logo from './Logo'
 import { GrSearch } from "react-icons/gr"
 import { FaUserAlt } from "react-icons/fa"
 import { PiShoppingCartSimpleFill } from "react-icons/pi"
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import summaryApi from '../common'
 import { toast } from 'react-toastify'
@@ -16,6 +16,10 @@ const Header = () => {
     const dispatch = useDispatch()
     const [menuDisplay, setMenuDisplay] = useState(false)
     const context = useContext(Context)
+    const searchInput = useLocation()
+    const [search, setSearch] = useState(searchInput?.search?.split("=")[1])
+
+    const navigate = useNavigate()
 
     // console.log("user header", user)
 
@@ -41,6 +45,15 @@ const Header = () => {
         }
     }
 
+    const handleSearch = (e) => {
+        const { value } = e.target;
+        setSearch(value)
+        if(value){
+            navigate(`/search?q=${value}`)
+        }else{
+            navigate(`/search`)
+        }
+    }
   return (
     <header className='h-16 shadow-md bg-white fixed w-full z-30'>
     <div className='h-full container mx-auto flex items-center px-4 justify-between sticky'>
@@ -49,7 +62,7 @@ const Header = () => {
         </div>
 
         <div className='hidden lg:flex items-center w-full justify-between max-w-sm border rounded-full pl-2 focus-within:shadow'>
-            <input type='text' className='w-full outline-none' placeholder='search product here...'/>
+            <input type='text' className='w-full outline-none' placeholder='search product here...' onChange={handleSearch} value={search}/>
             <div className='text-lg min-w-[50px] h-8 bg-gray-900 flex items-center justify-center rounded-r-full text-white cursor-pointer'>
                 <GrSearch />
             </div>

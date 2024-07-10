@@ -7,6 +7,9 @@ import { getAllProducts, getCategoryProduct, getCategoryWiseProduct, getProductD
 import addToCartProduct from "../controllers/users/addToCart.js";
 import countAddToCartProduct from "../controllers/users/countAddToCartProduct.js";
 import addToCartProductView from "../controllers/users/addToCatrProductView.js";
+import updateAddToCartItemProduct from "../controllers/users/updateAddToCartItemProduct.js";
+import deleteCartProductItem from "../controllers/users/deleteCartProductItem.js";
+import searchProduct from "../controllers/product/searchProduct.js";
 
 const router = Router()
 
@@ -29,5 +32,9 @@ router.route("/product-details").post(getProductDetails)
 router.route("/add-to-cart").post(verifyJwt, addToCartProduct)
 router.route("/updateCart").get(verifyJwt, countAddToCartProduct)
 router.route("/cartProduct").get(verifyJwt, addToCartProductView)
+router.route('/updateCartItem').post(verifyJwt, updateAddToCartItemProduct)
+router.route('/deleteCartItem').delete(verifyJwt, deleteCartProductItem)
+
+router.route("/searchProduct").get(searchProduct)
 
 export default router;
