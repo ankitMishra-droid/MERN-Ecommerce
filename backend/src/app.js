@@ -21,12 +21,4 @@ import userRouter from "./routes/user.routes.js";
 
 app.use("/api/users", userRouter)
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-
-app.use(express.static(path.join(__dirname, "../../frontend/build")))
-app.get("*", (req,res) => {
-    res.sendFile(path.join(__dirname, "../../frontend/build/index.html"))
-})
-
 export {app}
