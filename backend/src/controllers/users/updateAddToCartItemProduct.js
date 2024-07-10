@@ -7,12 +7,7 @@ const updateAddToCartItemProduct = asyncHandler( async (req, res) => {
     try {
         const currentUser = req.user?._id;
         const addToCartProductId = req?.body?._id;
-        // const { productId } = req?.body
         const qty = req.body.quantity
-
-        console.log("addToCartProductId: ", addToCartProductId)
-        console.log("qty: ", qty)
-        console.log("currentUser: ", currentUser)
 
         const updateCartItem = await AddToCart.updateOne({_id: addToCartProductId}, {
             ...(qty && {quantity: qty})

@@ -24,7 +24,7 @@ const generateAccessTokenAndRefreshToken = async(userId) => {
 const registerUser = asyncHandler( async (req,res) => {
     try {
         
-    const {name, email, password, phone, profilePic} = req.body;
+    const {name, email, password, phone} = req.body;
 
     if([name,email,password, phone].some((field)=> field?.trim() === "")){
         throw new ApiError(400, "All fields are required")
@@ -46,25 +46,25 @@ const registerUser = asyncHandler( async (req,res) => {
         }
     }
 
-    const profilePath = req.files?.profilePic[0]?.path;
-    console.log(profilePath)
+    // const profilePath = req.files?.profilePic[0]?.path;
+    // console.log(profilePath)
 
-    if (!profilePath){
-        throw new ApiError(400, "profile picture is required")
-    }
+    // if (!profilePath){
+    //     throw new ApiError(400, "profile picture is required")
+    // }
 
-    const profile = await uploadOnCloudinary(profilePath)
+    // const profile = await uploadOnCloudinary(profilePath)
 
-    if(!profile) {
-        throw new ApiError(400, "profile picture is required")
-    }
+    // if(!profile) {
+    //     throw new ApiError(400, "profile picture is required")
+    // }
 
     const user = await User.create({
         name,
         email,
         password,
         phone,
-        profilePic: profile?.url
+        // profilePic: profile?.url
     })
 
     const createdUser = await User.findById(user._id).select(
