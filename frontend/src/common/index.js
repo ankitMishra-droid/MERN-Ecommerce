@@ -1,4 +1,4 @@
-const backendDomain = "https://mern-ecommerce-api-weld.vercel.app";
+const backendDomain = "http://localhost:5000";
 
 const summaryApi = {
     signUp : {
@@ -72,6 +72,10 @@ const summaryApi = {
     searchProductItem: {
         url : `${backendDomain}/api/users/searchProduct`,
         method: "get"
+    },
+    filterProductItem: {
+        url : `${backendDomain}/api/users/filter-product`,
+        method: "POST"
     }
 }
 

@@ -14,6 +14,7 @@ const Home = () => {
       <HorizontalCardProduct category={"tv"} heading={"Top Deals on TV"}/>
       <HorizontalCardProduct category={"watches"} heading={"Top Deals on Watches"}/>
       <HorizontalCardProduct category={"realme"} heading={"Top Deals on Mobile Phones"}/>
+      <HorizontalCardProduct category={"camera"} heading={"Top Deals on Camera"}/>
     </div>
   )
 }

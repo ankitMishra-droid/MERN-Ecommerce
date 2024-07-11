@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import summaryApi from '../common'
 import loadingGif from "../assets/loading.svg"
-import SearchProdctCard from '../components/SearchProdctCard'
+import VerticalProductCard from '../components/VerticalProductCard'
 
 const SearchProduct = () => {
     const query = useLocation()
@@ -36,7 +36,7 @@ const SearchProduct = () => {
         }
         {
             data.length !== 0 && !loading && (
-                <SearchProdctCard loading={loading} data={data}/>
+                <VerticalProductCard loading={loading} data={data}/>
             )
         }
     </div>

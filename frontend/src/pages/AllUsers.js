@@ -60,7 +60,7 @@ const AllUsers = () => {
                         <tr key={el?._id} className='font-medium'>
                             <td className='py-4 px-6 border-b border-gray-200'>{index+1}</td>
                             <td className='py-4 px-6 border-b border-gray-200'>{el?.name}</td>
-                            <td className='py-4 px-6 border-b border-gray-200 break-words'>{el?.email}</td>
+                            <td className='py-4 px-6 border-b border-gray-200 line-clamp-6'>{el?.email}</td>
                             <td className='py-4 px-6 border-b border-gray-200'>{el?.role}</td>
                             <td className='py-4 px-6 border-b border-gray-200 break-all'>{el?.phone}</td>
                             <td className='py-4 px-6 border-b border-gray-200'>{moment(el?.createdAt).format("ll")}</td>

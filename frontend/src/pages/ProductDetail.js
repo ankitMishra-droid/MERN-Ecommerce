@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import summaryApi from "../common";
 import displayCurrency from "../helpers/displayCurrency";
 import CategroyWiseProduct from "../components/CategoryWiseProduct";
+import addToCart from "../helpers/addToCart";
+import Context from "../context";
 
 const ProductDetail = () => {
   const [data, setData] = useState({
@@ -21,6 +23,8 @@ const ProductDetail = () => {
   const [activeImage, setActiveImage] = useState("");
   const [moveZoomImage, setMoveZoomImage] = useState("0% 0%");
   const [zoomedImage, setZoomedImage] = useState(false);
+
+  const { fetchAddToCartCount } = useContext(Context)
 
   const handleZoomImage = (e) => {
     const { top, left, width, height } = e.target.getBoundingClientRect();
@@ -54,6 +58,11 @@ const ProductDetail = () => {
     setActiveImage(imageUrl);
   };
 
+  const handleAddToCart = async(e, id) => {
+    await addToCart(e, id)
+    fetchAddToCartCount()
+  }
+
   useEffect(() => {
     fetchProductDetails();
   }, [params]);
@@ -64,7 +73,7 @@ const ProductDetail = () => {
         {/* product details started */}
         <div className="min-h-[200px] flex flex-col md:flex-row gap-0 md:gap-4">
           {/* images display */}
-          <div className="h-auto md:h-96 flex flex-col md:flex-row-reverse gap-4">
+          <div className="w-full md:w-1/2 h-auto md:h-96 flex flex-col md:flex-row-reverse gap-4">
             <div
               className="w-full h-full min-w-full min-h-full bg-slate-200 relative overflow-hidden"
               onMouseMove={handleZoomImage}
@@ -145,7 +154,7 @@ const ProductDetail = () => {
               </div>
             </div>
           ) : (
-            <div className="flex flex-col gap-1 mt-5 md:mt-0">
+            <div className="w-full md:w-1/2 flex flex-col gap-1 mt-5 md:mt-0">
               <span className="bg-black px-2 text-center text-sm font-medium text-white rounded-full capitalize inline-block w-fit">
                 {data?.brandName}
               </span>
@@ -167,7 +176,7 @@ const ProductDetail = () => {
                 <button className="border-2 border-gray-950 rounded px-3 py-1 w-full md:min-w-[120px] font-medium hover:bg-black hover:text-white transition-all">
                   Buy Now
                 </button>
-                <button className="border-2 border-gray-950 rounded px-3 py-1 w-full md:min-w-[120px] font-medium bg-black text-white hover:bg-white hover:text-black transition-all">
+                <button className="border-2 border-gray-950 rounded px-3 py-1 w-full md:min-w-[120px] font-medium bg-black text-white hover:bg-white hover:text-black transition-all" onClick={(e) => handleAddToCart(e, data?._id)}>
                   Add To Cart
                 </button>
               </div>

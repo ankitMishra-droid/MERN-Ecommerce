@@ -207,7 +207,7 @@ const UploadProduct = ({ onClose, fetchData }) => {
             <div className="flex items-center gap-3">
               {data.productImg.map((el, index) => {
                 return (
-                  <div className="relative group" key={el?.asset_id}>
+                  <div className="relative group" key={el?.asset_id + index}>
                     <img
                       src={el}
                       width={80}

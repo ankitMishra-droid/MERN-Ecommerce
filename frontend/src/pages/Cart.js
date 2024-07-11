@@ -239,16 +239,16 @@ const Cart = () => {
                   {displayCurrency(handleSubtotal)}
                 </p>
               </div>
-              <div className="flex justify-between">
-                <p className="text-gray-700">Shipping</p>
-                <p className="text-gray-700">{displayCurrency(250)}</p>
-              </div>
+              {/* <div className="flex justify-between">
+                <p className="text-gray-700">Total Quantity</p>
+                <p className="text-gray-700">{}</p>
+              </div> */}
               <hr className="my-4" />
               <div className="flex justify-between">
                 <p className="text-lg font-bold">Total</p>
                 <div className="">
                   <p className="mb-1 text-lg font-bold">
-                    {displayCurrency(handleSubtotal + 250)}
+                    {displayCurrency(handleSubtotal)}
                   </p>
                   <p className="text-sm text-gray-700">including GST</p>
                 </div>
