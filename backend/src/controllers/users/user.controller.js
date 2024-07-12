@@ -46,14 +46,14 @@ const registerUser = asyncHandler( async (req,res) => {
         }
     }
 
-    // const profilePath = req.files?.profilePic[0]?.path;
+    const profilePath = req.files?.profilePic[0]?.path;
     // console.log(profilePath)
 
     // if (!profilePath){
     //     throw new ApiError(400, "profile picture is required")
     // }
 
-    // const profile = await uploadOnCloudinary(profilePath)
+    const profile = await uploadOnCloudinary(profilePath)
 
     // if(!profile) {
     //     throw new ApiError(400, "profile picture is required")
@@ -64,7 +64,7 @@ const registerUser = asyncHandler( async (req,res) => {
         email,
         password,
         phone,
-        // profilePic: profile?.url
+        profilePic: profile?.url
     })
 
     const createdUser = await User.findById(user._id).select(
@@ -265,22 +265,25 @@ const getCuurentUser = asyncHandler( async (req, res) => {
 
 // update user's name, email, phone
 const updateDetails = asyncHandler( async(req, res) => {
+    const sessionId = req.user?._id;
 
-    const { name, email, phone, role } = req.body;
+    const { userId, name, email, phone, role } = req.body;
 
-    const userId = req.user;
 
-    const user = await User.findById(userId)
+    const user = await User.findById(sessionId)
+
+    const payload = {
+        ...( email && { email : email}),
+        ...(phone && { phone : phone}),
+        ...( name && { name : name}),
+        ...( role && { role : role}),
+    }
 
     // console.log("userId: ", userId, user.role)
     const updateUser = await User.findByIdAndUpdate(
         // req.user?._id,
-        user,
-        {
-            $set:{
-                name: name, phone: phone, email: email, role: role
-            }
-        },
+        userId,
+        payload,
         {
             new: true
         }

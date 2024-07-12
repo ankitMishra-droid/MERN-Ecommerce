@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import banner1 from "../assets/banner/img1.webp"
-import banner2 from "../assets/banner/img2.webp"
-import banner3 from "../assets/banner/img3.jpg"
-import banner4 from "../assets/banner/img4.jpg"
-import banner5 from "../assets/banner/img5.webp"
+import banner1 from "../assets/banner/boat.webp"
+import banner2 from "../assets/banner/watch.webp"
+import banner3 from "../assets/banner/realme.jpg"
+import banner4 from "../assets/banner/tv.jpg"
 
-import banner1Mobile from "../assets/banner/img1_mobile.jpg"
-import banner2Mobile from "../assets/banner/img2_mobile.webp"
-import banner3Mobile from "../assets/banner/img3_mobile.jpg"
-import banner4Mobile from "../assets/banner/img4_mobile.jpg"
-import banner5Mobile from "../assets/banner/img5_mobile.png"
+import banner1Mobile from "../assets/banner/5.avif"
+import banner2Mobile from "../assets/banner/boat_mobile.webp"
+import banner3Mobile from "../assets/banner/hadphone_mobile.jpg"
+import banner4Mobile from "../assets/banner/tv_mobile.jpg"
 
 import { FaChevronLeft } from "react-icons/fa6";
 import { FaChevronRight } from "react-icons/fa6";
@@ -23,7 +21,6 @@ const BannerProduct = () => {
     banner2,
     banner3,
     banner4,
-    banner5,
   ]
 
   const mobileImages = [
@@ -31,7 +28,6 @@ const BannerProduct = () => {
     banner2Mobile,
     banner3Mobile,
     banner4Mobile,
-    banner5Mobile
   ]
 
   const nextImage = () => {
@@ -60,7 +56,7 @@ const BannerProduct = () => {
 
   return (
     <div className='container mx-auto px-4 rounded-md mt-3'>
-      <div className='h-60 md:h-72 w-full bg-cyan-100 relative'>
+      <div className='h-60 md:h-96 w-full bg-cyan-100 relative'>
         
         <div className='absolute z-10 h-full w-full md:flex items-center hidden'>
           <div className='flex justify-between w-full text-2xl pl-2 pr-2'>
@@ -69,19 +65,19 @@ const BannerProduct = () => {
           </div>
         </div>
 
-        <div className='hidden md:flex w-full h-full overflow-hidden'>
+        <div className='hidden md:flex w-full h-full overflow-hidden rounded-md'>
           {
             desktopImg.map((imageUrl, index) => {
               return(
-                <div className='w-full h-full min-w-full min-h-full transition-all' key={imageUrl} style={{ transform: `translateX(-${currentImage * 100}%)`}}>
-                  <img src={imageUrl} className='w-full h-full' alt={imageUrl + index}/>
+                <div className='w-full h-full min-w-full min-h-full transition-all rounded' key={imageUrl} style={{ transform: `translateX(-${currentImage * 100}%)`}}>
+                  <img src={imageUrl} className='w-full h-full rounded-md' alt={imageUrl + index}/>
                 </div>
               )
             })
           }
         </div>
 
-        <div className='flex w-full h-full overflow-hidden md:hidden'>
+        <div className='flex w-full h-full overflow-hidden md:hidden rounded'>
           {
             mobileImages.map((imageUrl, index) => {
               return(

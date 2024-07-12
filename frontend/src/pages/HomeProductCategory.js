@@ -1,31 +1,40 @@
 import React, { useEffect, useState } from 'react'
-import { json, useParams } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import ProductCategory from '../common/category'
-import CategroyWiseProduct from '../components/CategoryWiseProduct'
 import summaryApi from '../common'
 import VerticalProductCard from '../components/VerticalProductCard'
+import loadingImg from "../assets/loading.svg"
 
 const HomeProductCategory = () => {
-    const params = useParams()
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
-    const [selectCategory, setSelectCategory] = useState({})
+    const [sortBy, setSortBy] = useState("")
+    const navigate = useNavigate()
+    const location = useLocation()
+    const urlSearch = new URLSearchParams(location.search)
+    const urlCategoryListinArray = urlSearch.getAll("category")
+
+    const urlCategoryListObjects = {}
+    urlCategoryListinArray.forEach(el => {
+      urlCategoryListObjects[el] = true
+    })
+
+    const [selectCategory, setSelectCategory] = useState(urlCategoryListObjects)
     const [filterCategoryProduct, setFilterCategoryProduct] = useState([])
 
     const fetchProduct = async() => {
       setLoading(true)
       const response = await fetch(summaryApi.filterProductItem.url, {
         method: summaryApi.filterProductItem.method,
-        credentials: "include",
         headers: {
-          "content-type": "application/json"
+          "content-type" : "application/json"
         },
         body: JSON.stringify({
           category : filterCategoryProduct
         })
       })
 
-      const dataResponse = response.json()
+      const dataResponse = await response.json()
       setLoading(false)
       setData(dataResponse?.data || [])
     }
@@ -56,7 +65,35 @@ const HomeProductCategory = () => {
       }).filter(el => el  )
 
       setFilterCategoryProduct(arrayOfCategory)
+
+      const urlFormat = arrayOfCategory.map((el, index) => {
+        if((arrayOfCategory.length - 1) === index){
+          return `category=${el}`
+        }
+
+        return `category=${el}&&`
+      })
+
+      console.log(urlFormat.join(""))
+      navigate("/product-category?"+urlFormat.join(""))
     },[selectCategory])
+
+
+    const handleSortedProduct = (e) => {
+      const { value } = e.target
+
+      setSortBy(value)
+
+      if(value === "asc"){
+        setData(prev => prev.sort((a,b) => a.selling - b.selling))
+      }
+
+      if(value === "dsc"){
+        setData(prev => prev.sort((a,b) => b.selling - a.selling))
+      }
+    }
+
+    useEffect(() => {},[sortBy])
   return (
     <div className='container mx-auto p-4'>
       {/* desktop */}
@@ -69,12 +106,12 @@ const HomeProductCategory = () => {
 
                   <form className='text-sm flex flex-col gap-2 py-2'>
                     <div className='flex items-center gap-4'>
-                      <input type='radio' name='sortBy'/>
+                      <input type='radio' name='sortBy' checked={sortBy === "asc"} onChange={handleSortedProduct} value={'asc'}/>
                       <label>Price: Low To High</label>
                     </div>
 
                     <div className='flex items-center gap-4'>
-                      <input type='radio' name='sortBy'/>
+                      <input type='radio' name='sortBy' checked={sortBy === "dsc"} onChange={handleSortedProduct} value={'dsc'}/>
                       <label>Price: High To Low</label>
                     </div>
                   </form>
@@ -87,9 +124,9 @@ const HomeProductCategory = () => {
                     {
                       ProductCategory.map((category,index) => {
                         return(
-                          <div className='flex items-center gap-4' key={category + index}>
+                          <div className='flex items-center gap-4' key={category + "category" + index}>
                             <input type='checkbox' name={"category"} checked={selectCategory[category?.values]} value={category?.values} id={category?.values} onChange={handleSelectCategory}/>
-                            <label>{category?.label}</label>
+                            <label htmlFor={category?.values}>{category?.label}</label>
                           </div>
                         )
                       })
@@ -98,13 +135,22 @@ const HomeProductCategory = () => {
               </div>
           </div>
           {/* right side */}
-          <div>
+          {
+            loading ? (
+              <div className='flex justify-center items-center'>
+                <img src={loadingImg} className='w-20 h-20 block mx-auto' alt={loadingImg} />
+              </div>
+            ) : (
+          <div className='px-4'>
+            <p>Search Results: {data?.length}</p>
               {
                 data.length !== 0 && !loading && (
-                  <VerticalProductCard data={data} loading={loading} />
+                    <VerticalProductCard data={data} loading={loading} />
                 )
               }
           </div>
+          )
+        }
         </div>
     </div>
   )

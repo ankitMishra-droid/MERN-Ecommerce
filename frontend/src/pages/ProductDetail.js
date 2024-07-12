@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import summaryApi from "../common";
 import displayCurrency from "../helpers/displayCurrency";
 import CategroyWiseProduct from "../components/CategoryWiseProduct";
@@ -20,6 +20,7 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(false);
   const productListLoading = new Array(4).fill(null);
 
+  const navigate = useNavigate()
   const [activeImage, setActiveImage] = useState("");
   const [moveZoomImage, setMoveZoomImage] = useState("0% 0%");
   const [zoomedImage, setZoomedImage] = useState(false);
@@ -61,6 +62,13 @@ const ProductDetail = () => {
   const handleAddToCart = async(e, id) => {
     await addToCart(e, id)
     fetchAddToCartCount()
+    navigate("/cart")
+  }
+
+  const handleBuy = async(e, id) => {
+    await addToCart(e, id)
+    fetchAddToCartCount()
+    navigate("/cart")
   }
 
   useEffect(() => {
@@ -69,9 +77,9 @@ const ProductDetail = () => {
 
   return (
     <>
-      <div className="container mx-auto mt-10 mb-10 pr-6 pl-6 md:pr-16 md:pl-16">
+      <div className="container mx-auto mt-10 mb-10 pr-6 pl-6 md:pr-16 md:pl-16 lg:pr-28 lg:pl-28">
         {/* product details started */}
-        <div className="min-h-[200px] flex flex-col md:flex-row gap-0 md:gap-4">
+        <div className="min-h-[200px] flex flex-col md:flex-row justify-between gap-0 md:gap-4">
           {/* images display */}
           <div className="w-full md:w-1/2 h-auto md:h-96 flex flex-col md:flex-row-reverse gap-4">
             <div
@@ -113,10 +121,10 @@ const ProductDetail = () => {
                   ))}
                 </div>
               ) : (
-                <div className="flex gap-4 md:flex-col overflow-scroll scrollbar-none h-full">
+                <div className="flex gap-2 md:flex-col overflow-scroll scrollbar-none h-full">
                   {data.productImg.map((imgURL, i) => (
                     <div
-                      className="bg-slate-200 w-20 h-auto md:h-20 rounded"
+                      className="bg-slate-200 w-20 h-auto md:h-20 rounded p-1"
                       key={"productImg" + i}
                     >
                       <img
@@ -173,7 +181,7 @@ const ProductDetail = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-3 my-2">
-                <button className="border-2 border-gray-950 rounded px-3 py-1 w-full md:min-w-[120px] font-medium hover:bg-black hover:text-white transition-all">
+                <button className="border-2 border-gray-950 rounded px-3 py-1 w-full md:min-w-[120px] font-medium hover:bg-black hover:text-white transition-all" onClick={(e) => handleBuy(e, data?._id)}>
                   Buy Now
                 </button>
                 <button className="border-2 border-gray-950 rounded px-3 py-1 w-full md:min-w-[120px] font-medium bg-black text-white hover:bg-white hover:text-black transition-all" onClick={(e) => handleAddToCart(e, data?._id)}>

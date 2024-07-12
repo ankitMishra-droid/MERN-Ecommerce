@@ -5,7 +5,7 @@ import HorizontalCardProduct from '../components/HorizontalCardProduct'
 
 const Home = () => {
   return (
-    <div className='pl-8 pr-8 py-5 container flex justify-center flex-wrap items-center'>
+    <div className='pl-8 pr-8 py-5 container block mx-auto'>
       <HomeProduct />
       <BannerProduct />
       <HorizontalCardProduct category={"airpods"} heading={"Top Deals on Airbuds"}/>
@@ -13,7 +13,7 @@ const Home = () => {
       <HorizontalCardProduct category={"mouse"} heading={"Top Deals on Mouse"}/>
       <HorizontalCardProduct category={"tv"} heading={"Top Deals on TV"}/>
       <HorizontalCardProduct category={"watches"} heading={"Top Deals on Watches"}/>
-      <HorizontalCardProduct category={"realme"} heading={"Top Deals on Mobile Phones"}/>
+      <HorizontalCardProduct category={"phone"} heading={"Top Deals on Mobile Phones"}/>
       <HorizontalCardProduct category={"camera"} heading={"Top Deals on Camera"}/>
     </div>
   )
