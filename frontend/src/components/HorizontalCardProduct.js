@@ -46,7 +46,7 @@ const HorizontalCardProduct = ({ category, heading }) => {
         fetchData()
     }, [])
   return (
-    <div className='container mx-auto px-4 my-6 relative'>
+    <div className='container mx-auto my-6 relative'>
         
         <h2 className='font-bold text-2xl'>{heading}</h2>
 
