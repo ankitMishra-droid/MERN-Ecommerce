@@ -74,7 +74,6 @@ const HomeProductCategory = () => {
         return `category=${el}&&`
       })
 
-      console.log(urlFormat.join(""))
       navigate("/product-category?"+urlFormat.join(""))
     },[selectCategory])
 
