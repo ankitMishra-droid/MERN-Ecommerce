@@ -198,6 +198,7 @@ const UploadProduct = ({ onClose, fetchData }) => {
                   id="uploadImageInput"
                   className="hidden"
                   onChange={handleUploadPic}
+                  multiple
                 />
               </div>
             </label>

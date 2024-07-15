@@ -1,4 +1,5 @@
 const ProductCategory = [
+    {id: "0", label: "All", values: "all"},
     {id: "1", label: "Camera", values: "camera"},
     {id: "2", label: "Earphones", values: "earphones"},
     {id: "3", label: "Shoes", values: "shoes"},

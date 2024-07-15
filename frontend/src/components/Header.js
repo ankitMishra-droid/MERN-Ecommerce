@@ -99,19 +99,25 @@ const Header = () => {
 
             {menuDisplay && (
               <>
-                {(user?.role === ROLE.ADMIN ||
-                  user?.role === ROLE.EMPLOYEE) && (
-                  <div className="absolute bg-white bottom-0 top-11 p-2 h-fit shadow-lg rounded">
-                    <nav>
+                <div className="absolute bg-white bottom-0 top-11 p-2 h-fit shadow-lg rounded">
+                  <nav className="flex flex-col justify-center">
+                    {(user?.role === ROLE.ADMIN ||
+                      user?.role === ROLE.EMPLOYEE) && (
                       <Link
                         to={"admin-panel/all-products"}
                         className="whitespace-nowrap hover:text-orange-500"
                       >
                         Admin Panel
                       </Link>
-                    </nav>
-                  </div>
-                )}
+                    )}
+                    <Link
+                      to={"my-account"}
+                      className="whitespace-nowrap hover:text-orange-500"
+                    >
+                      Profile
+                    </Link>
+                  </nav>
+                </div>
               </>
             )}
           </div>

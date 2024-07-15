@@ -26,14 +26,32 @@ const HomeProduct = () => {
   return (
     <div className="container mx-auto p-2 md:p-4">
       <div className="flex gap-4 items-center justify-between overflow-scroll scrollbar-none">
-        {loading
-          ? 
-            categoryLoadingMap.map((el, index) => {
-                return(
-                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden p-3 bg-slate-200 flex items-center justify-center animate-pulse" key={"category"+index}></div>
-                )
-            })
-          : categoryProduct.map((product, index) => {
+        {loading ? (
+          categoryLoadingMap.map((el, index) => {
+            return (
+              <div
+                className="w-14 h-14 md:w-20 md:h-20 rounded-full overflow-hidden p-3 bg-slate-200 flex items-center justify-center animate-pulse"
+                key={"category" + index}
+              ></div>
+            );
+          })
+        ) : (
+          <>
+            <Link
+              to={"/product-category?category=all"}
+              className="cursor-pointer"
+            >
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden p-3 bg-slate-200 flex items-center justify-center">
+                <img
+                  src={""}
+                  alt={"product?.category"}
+                  className="h-full object-scale-down mix-blend-multiply hover:scale-125 transition-all"
+                />
+              </div>
+              <p className="text-center capitalize md:text-base text-sm">All</p>
+            </Link>
+            {
+            categoryProduct.map((product, index) => {
               return (
                 <Link
                   to={"/product-category?category=" + product?.category}
@@ -52,7 +70,10 @@ const HomeProduct = () => {
                   </p>
                 </Link>
               );
-            })}
+            })
+            }
+          </>
+        )}
       </div>
     </div>
   );

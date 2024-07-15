@@ -116,7 +116,7 @@ const Cart = () => {
     return acc + (product?.productId?.selling || 0) * (product?.quantity || 1);
   }, 0);
   return (
-    <div className="conatiner mx-auto p-1 mb-2 lg:mb-5">
+    <div className="conatiner mx-auto p-2 mb-2 lg:mb-5 md:pl-10 md:pr-10">
       <div
         className="text-center text-lg my-3
       "
