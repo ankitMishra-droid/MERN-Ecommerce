@@ -91,62 +91,136 @@ const registerUser = asyncHandler( async (req,res) => {
 })
 
 // login user
-const loginUser = asyncHandler( async(req, res) => {
+// const loginUser = asyncHandler( async(req, res) => {
 
-    try {
+//     try {
         
-        const {email, password} = req.body;
+//         const {email, password} = req.body;
 
-        if(!email){
-            throw new Error("please enter valid email")
-        }
+//         if(!email){
+//             throw new Error("please enter valid email")
+//         }
 
-        if(!password){
-            throw new Error("please enter password")
-        }
+//         if(!password){
+//             throw new Error("please enter password")
+//         }
 
-        const user = await User.findOne({email})
+//         const user = await User.findOne({email})
 
-        if(!user){
-            throw new Error("User doesn't exist!")
-        }
+//         if(!user){
+//             throw new Error("User doesn't exist!")
+//         }
 
-        const isPasswordValid = await user.isPasswordCorrect(password)
+//         const isPasswordValid = await user.isPasswordCorrect(password)
 
-        if(!isPasswordValid){
-            throw new Error("Password was wrong")
-        }
+//         if(!isPasswordValid){
+//             throw new Error("Password was wrong")
+//         }
 
-        const {accessToken, refreshToken} = await generateAccessTokenAndRefreshToken(user._id)
+//         const {accessToken, refreshToken} = await generateAccessTokenAndRefreshToken(user._id)
 
-        const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
+//         const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
-        const option = {
-            httpOnly: true,
-            secure: true
-        }
+//         const option = {
+//             httpOnly: true,
+//             secure: true
+//         }
 
-        return res
+//         return res
+//         .status(200)
+//         .cookie("accessToken", accessToken, option)
+//         .cookie("refreshToken", refreshToken, option)
+//         .json(
+//             new ApiResponse(
+//                 200,
+//                 {
+//                     user: loggedInUser, accessToken, refreshToken
+//                 },
+//                 "Login Successfully!"
+//             )
+//         )
+//     } catch (error) {
+//         res.json({
+//             message: error.message || error,
+//             error: true,
+//             success: false
+//         })
+//     }
+// })
+const loginUser = asyncHandler(async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+      if (!email) {
+        return res.status(400).json({
+          message: "Please enter a valid email",
+          error: true,
+          success: false,
+        });
+      }
+  
+      if (!password) {
+        return res.status(400).json({
+          message: "Please enter password",
+          error: true,
+          success: false,
+        });
+      }
+  
+      const user = await User.findOne({ email });
+  
+      if (!user) {
+        return res.status(404).json({
+          message: "User doesn't exist!",
+          error: true,
+          success: false,
+        });
+      }
+  
+      const isPasswordValid = await user.isPasswordCorrect(password);
+  
+      if (!isPasswordValid) {
+        return res.status(401).json({
+          message: "Password was wrong",
+          error: true,
+          success: false,
+        });
+      }
+  
+      const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id);
+  
+      const loggedInUser = await User.findById(user?._id).select("-password -refreshToken");
+  
+      const options = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // Set secure only in production
+        sameSite: 'None', // Allow cross-site cookies
+      };
+  
+      return res
         .status(200)
-        .cookie("accessToken", accessToken, option)
-        .cookie("refreshToken", refreshToken, option)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
         .json(
-            new ApiResponse(
-                200,
-                {
-                    user: loggedInUser, accessToken, refreshToken
-                },
-                "Login Successfully!"
-            )
-        )
+          new ApiResponse(
+            200,
+            {
+              user: loggedInUser,
+              accessToken,
+              refreshToken,
+            },
+            "Login Successfully!"
+          )
+        );
     } catch (error) {
-        res.json({
-            message: error.message || error,
-            error: true,
-            success: false
-        })
+      return res.status(500).json({
+        message: error.message || error,
+        error: true,
+        success: false,
+      });
     }
-})
+  });
+  
 
 // logout user
 const logoutUser = asyncHandler(async(req, res) => {
