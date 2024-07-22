@@ -4,6 +4,7 @@ import summaryApi from "../common";
 import Context from "../context";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import {loadStripe} from '@stripe/stripe-js';
 import displayCurrency from "../helpers/displayCurrency";
 
 const Cart = () => {
@@ -44,7 +45,7 @@ const Cart = () => {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        _id : id,
+        _id: id,
         quantity: qty + 1,
       }),
     });
@@ -70,7 +71,7 @@ const Cart = () => {
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          _id : id,
+          _id: id,
           quantity: qty - 1,
         }),
       });
@@ -88,33 +89,57 @@ const Cart = () => {
     }
   };
 
-  const handleRemoveProduct = async(id) => {
+  const handleRemoveProduct = async (id) => {
     const response = await fetch(summaryApi.deleteCartItem.url, {
       method: summaryApi.deleteCartItem.method,
       credentials: "include",
       headers: {
-        "content-type" : 'application/json'
+        "content-type": "application/json",
       },
       body: JSON.stringify({
-        _id: id
-      })
-    })
+        _id: id,
+      }),
+    });
 
-    const dataResponse = await response.json()
+    const dataResponse = await response.json();
 
-    if(dataResponse.success){
-      fetchProduct()
-      context.fetchAddToCartCount()
-      toast.success(dataResponse.message)
+    if (dataResponse.success) {
+      fetchProduct();
+      context.fetchAddToCartCount();
+      toast.success(dataResponse.message);
     }
 
-    if(dataResponse.error){
-      toast.success(dataResponse.error)
+    if (dataResponse.error) {
+      toast.success(dataResponse.error);
     }
-  }
+  };
+
   const handleSubtotal = data.reduce((acc, product) => {
     return acc + (product?.productId?.selling || 0) * (product?.quantity || 1);
   }, 0);
+
+  const handlePayment = async () => {
+
+    const stripePromise = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHED_KEY)
+    const response = await fetch(summaryApi.payment.url, {
+      method: summaryApi.payment.method,
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        cartItems: data,
+      }),
+    });
+
+    const responseData = await response.json()
+
+    if(responseData?.data?.id){
+      stripePromise.redirectToCheckout({ sessionId: responseData?.data?.id })
+    }
+
+    console.log(responseData)
+  };
   return (
     <div className="conatiner mx-auto p-2 mb-2 lg:mb-5 md:pl-10 md:pr-10">
       <div
@@ -197,7 +222,9 @@ const Cart = () => {
                             value={product?.quantity}
                             onChange={() => {}}
                           /> */}
-                          <span className="bg-white text-center text-xs outline-none pl-2 pr-2">{product?.quantity}</span>
+                          <span className="bg-white text-center text-xs outline-none pl-2 pr-2">
+                            {product?.quantity}
+                          </span>
                           <button
                             className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-indigo-500 hover:text-blue-50"
                             onClick={() =>
@@ -228,37 +255,42 @@ const Cart = () => {
               })}
         </div>
 
-        <div className="mt-5 lg:mt-0 w-full max-w-md">
-          {loading ? (
-            <div className="w-full bg-slate-200 h-36 "></div>
-          ) : (
-            <div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 w-full">
-              <div className="mb-2 flex justify-between">
-                <p className="text-gray-700">Subtotal</p>
-                <p className="text-gray-700">
-                  {displayCurrency(handleSubtotal)}
-                </p>
-              </div>
-              {/* <div className="flex justify-between">
+        {data[0] && (
+          <div className="mt-5 lg:mt-0 w-full max-w-md">
+            {loading ? (
+              <div className="w-full bg-slate-200 h-36 "></div>
+            ) : (
+              <div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 w-full">
+                <div className="mb-2 flex justify-between">
+                  <p className="text-gray-700">Subtotal</p>
+                  <p className="text-gray-700">
+                    {displayCurrency(handleSubtotal)}
+                  </p>
+                </div>
+                {/* <div className="flex justify-between">
                 <p className="text-gray-700">Total Quantity</p>
                 <p className="text-gray-700">{}</p>
               </div> */}
-              <hr className="my-4" />
-              <div className="flex justify-between">
-                <p className="text-lg font-bold">Total</p>
-                <div className="">
-                  <p className="mb-1 text-lg font-bold">
-                    {displayCurrency(handleSubtotal)}
-                  </p>
-                  <p className="text-sm text-gray-700">including GST</p>
+                <hr className="my-4" />
+                <div className="flex justify-between">
+                  <p className="text-lg font-bold">Total</p>
+                  <div className="">
+                    <p className="mb-1 text-lg font-bold">
+                      {displayCurrency(handleSubtotal)}
+                    </p>
+                    <p className="text-sm text-gray-700">including GST</p>
+                  </div>
                 </div>
+                <button
+                  onClick={handlePayment}
+                  className="mt-6 w-full rounded-md bg-indigo-500 py-1.5 font-medium text-white hover:bg-indigo-600"
+                >
+                  Check out
+                </button>
               </div>
-              <button className="mt-6 w-full rounded-md bg-indigo-500 py-1.5 font-medium text-white hover:bg-indigo-600">
-                Check out
-              </button>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

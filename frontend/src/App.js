@@ -17,18 +17,26 @@ function App() {
   const [cartProductCount, setCartProductCount] = useState(0)
 
   const fetchCurrentUserDetail = async(e) => {
-    const dataResponse = await fetch(summaryApi.current_user.url, {
-      method: summaryApi.current_user.method,
-      credentials: "include"
-    })
-
-    const dataApi = await dataResponse.json()
-
-    if(dataApi.success){
-      dispatch(setUserDetails(dataApi.data))
+    try {
+      const dataResponse = await fetch(summaryApi.current_user.url, {
+        method: summaryApi.current_user.method,
+        credentials: "include",
+        headers: {
+          "content-type" : "application/json"
+        }
+      })
+  
+      const dataApi = await dataResponse.json()
+  
+      if(dataApi.success){
+        dispatch(setUserDetails(dataApi.data))
+      }
+  
+      // console.log("user_data", dataApi.data)
+    } catch (error) {
+      console.error("error: ", error)
     }
-
-    // console.log("user_data", dataResponse)
+    
   }
 
   const fetchAddToCartCount = async() => {

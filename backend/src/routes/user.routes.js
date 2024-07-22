@@ -11,6 +11,8 @@ import updateAddToCartItemProduct from "../controllers/users/updateAddToCartItem
 import deleteCartProductItem from "../controllers/users/deleteCartProductItem.js";
 import searchProduct from "../controllers/product/searchProduct.js";
 import filterProduct from "../controllers/product/filterProduct.js";
+import orderPayment from "../controllers/order/orderPayment.js";
+import deleteUser from "../controllers/users/deleteUserController.js";
 
 const router = Router()
 
@@ -35,8 +37,12 @@ router.route("/updateCart").get(verifyJwt, countAddToCartProduct)
 router.route("/cartProduct").get(verifyJwt, addToCartProductView)
 router.route('/updateCartItem').post(verifyJwt, updateAddToCartItemProduct)
 router.route('/deleteCartItem').delete(verifyJwt, deleteCartProductItem)
+router.route("/deleteUser").delete(deleteUser)
 
 router.route("/searchProduct").get(searchProduct)
 router.route("/filter-product").post(filterProduct)
+
+// checkout
+router.route("/checkout").post( verifyJwt, orderPayment)
 
 export default router;

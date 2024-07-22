@@ -19,7 +19,12 @@ const SearchProduct = () => {
     }
 
     useEffect(() => {
-        fetchSearchProduct()
+        const timeout = setTimeout(() => {
+            fetchSearchProduct()
+        },1500)
+        return () => {
+            clearTimeout(timeout)
+        }
     }, [query])
   return (
     <div className='container mx-auto p-4'>

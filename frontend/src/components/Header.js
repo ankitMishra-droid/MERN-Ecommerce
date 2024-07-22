@@ -35,6 +35,8 @@ const Header = () => {
       const dataRes = await res.json();
 
       if (dataRes.success) {
+        localStorage.removeItem("authToken")
+        sessionStorage.removeItem("authToken")
         toast.success(dataRes.message);
         dispatch(setUserDetails(null));
       }
@@ -56,6 +58,7 @@ const Header = () => {
       navigate(`/search`);
     }
   };
+  
   return (
     <header className="h-16 shadow-md bg-white fixed w-full z-30">
       <div className="h-full container mx-auto flex items-center px-4 justify-between sticky">

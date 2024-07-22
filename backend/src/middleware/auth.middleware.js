@@ -11,7 +11,7 @@ export const verifyJwt = asyncHandler(async(req, res, next) => {
         if (!token) {
             // throw new ApiError(401, "Unauthorized request")
             return res.json({
-                message: "user not logged in.",
+                message: "please login first",
                 error: true,
                 success: false
             })
