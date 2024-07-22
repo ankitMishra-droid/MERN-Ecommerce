@@ -96,7 +96,7 @@ const HomeProductCategory = () => {
   return (
     <div className='container mx-auto p-4'>
       {/* desktop */}
-        <div className='hidden lg:grid grid-cols-[200px,1fr]'>
+        <div className='lg:grid grid-cols-[200px,1fr]'>
           {/* left side */}
           <div className='bg-slate-300 p-2 min-h-[calc(100vh-120px)] overflow-y-scroll'>
             {/* sort by */}
