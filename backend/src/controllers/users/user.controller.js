@@ -123,11 +123,19 @@ const loginUser = asyncHandler( async(req, res) => {
 
         const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
+<<<<<<< Updated upstream
         const option = {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production', // set to true in production
             sameSite: 'None'
         }
+=======
+//         const option = {
+//             httpOnly: true,
+//             secure: process.env.NODE_ENV === 'production', // set to true in production
+            // sameSite: 'None'
+//         }
+>>>>>>> Stashed changes
 
         return res
         .status(200)
