@@ -13,6 +13,7 @@ import searchProduct from "../controllers/product/searchProduct.js";
 import filterProduct from "../controllers/product/filterProduct.js";
 import orderPayment from "../controllers/order/orderPayment.js";
 import deleteUser from "../controllers/users/deleteUserController.js";
+import webhooks from "../controllers/order/webhooks.js";
 
 const router = Router()
 
@@ -44,5 +45,6 @@ router.route("/filter-product").post(filterProduct)
 
 // checkout
 router.route("/checkout").post( verifyJwt, orderPayment)
+router.route("/webhook").post(webhooks)
 
 export default router;
