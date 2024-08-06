@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import summaryApi from "../common";
+import Loader from "../assets/loader.gif";
+import { toast } from "react-toastify";
 
 const ResetPassword = () => {
   const { userId, token } = useParams();
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const [buttonText, setButtonText] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setButtonText(true);
     try {
       const response = await fetch(
         `${summaryApi.reserPassword.url}/${userId}/${token}`,
@@ -20,12 +24,17 @@ const ResetPassword = () => {
         }
       );
 
-      const result = await response.json();
-      if (result.success) {
-        setMessage(result.message);
+      const responseData = await response.json();
+      if (responseData.success) {
+        setMessage(responseData.message);
+        setButtonText(false);
+        toast(responseData.message)
+        setPassword("")
         setTimeout(() => navigate("/login"), 3000); // Redirect to login after a few seconds
       } else {
-        setMessage(result.message);
+        setMessage(responseData.message);
+        toast(responseData.message)
+        setButtonText(false);
       }
     } catch (error) {
       setMessage("Error resetting password.");
@@ -33,7 +42,8 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="mt-10 w-full block mx-auto">
+    <>
+    <div className="mt-10 w-full p-1 bg-white flex justify-center flex-col items-center">
       <form onSubmit={handleSubmit}>
         {/* <div className="flex justify-center items-center">
           <label className="mx-3" htmlFor="password">Set Password:</label>
@@ -47,7 +57,7 @@ const ResetPassword = () => {
             required
           />
         </div> */}
-        <div class="grid gap-6 content-center justify-center  mb-6">
+        <div class="grid gap-6 content-center justify-center mb-2">
           <div>
             <label
               htmlFor="password"
@@ -68,14 +78,31 @@ const ResetPassword = () => {
           </div>
           <div></div>
         </div>
-        <div type="submit" className="flex justify-center items-center mt-8">
-          <button className="w-full max-w-[150px] px-6 py-2 btn-24 transition-all mx-auto block mt-3">
-            Reset
-          </button>
+        <div>
+          {buttonText ? (
+            <button
+              disabled
+              className="w-full rounded-md relative bg-indigo-500 py-1.5 font-medium text-white"
+            >
+              <span>Processing...</span>
+              <img
+                src={Loader}
+                className="w-4 h-4 absolute top-[0.6rem] right-4"
+                alt="loader"
+              />
+            </button>
+          ) : (
+            <button
+              className="w-full rounded-md bg-indigo-500 py-1.5 font-medium text-white hover:bg-indigo-600"
+            >
+              Save
+            </button>
+          )}
         </div>
-        {message && <p className="mt-4">{message}</p>}
       </form>
+      {/* {message && <p className="mt-4">{message}</p>} */}
     </div>
+      </>
   );
 };
 
