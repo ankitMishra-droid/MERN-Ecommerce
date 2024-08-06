@@ -29,8 +29,8 @@ const orderPayment = asyncHandler(async (req, res) => {
             currency: "inr",
             product_data: {
               name: item.productId.productName,
-              name: item.productId.brandName,
-              // name: item.productId.productImg,
+              // images: item.productId.brandName,
+              images: item.productId.productImg,
               metadata: {
                 productId: item.productId._id,
               },
@@ -51,7 +51,7 @@ const orderPayment = asyncHandler(async (req, res) => {
     const session = await stripe.checkout.sessions.create(params);
 
     return res
-      .status(200)
+      .status(303)
       .json(new ApiResponse(200, session, "Payment SuccessFull"));
   } catch (error) {
     return res

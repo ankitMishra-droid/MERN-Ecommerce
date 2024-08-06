@@ -1,4 +1,5 @@
-const backendDomain = "https://mern-ecommerce-api-weld.vercel.app";
+const backendDomain = "http://localhost:8000";
+// const backendDomain = "https://mern-ecommerce-api-weld.vercel.app";
 
 const summaryApi = {
     signUp : {
@@ -84,6 +85,14 @@ const summaryApi = {
     deleteUser: {
         url : `${backendDomain}/api/users/deleteUser`,
         method: "delete"
+    },
+    forgotPasswordLink: {
+        url: `${backendDomain}/api/users/send-reset-link`,
+        method: "POST"
+    },
+    reserPassword: {
+        url: `${backendDomain}/api/users`,
+        method: "POST"
     }
 }
 

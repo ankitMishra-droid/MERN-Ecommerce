@@ -29,8 +29,11 @@ const userModel = new Schema({
         type: String,
     },
     addresses: { 
-        type: [Schema.Types.Mixed] 
+        type: String 
     },
+    // addresses: { 
+    //     type: [Schema.Types.Mixed] 
+    // },
     profilePic: {
         type: String
     },

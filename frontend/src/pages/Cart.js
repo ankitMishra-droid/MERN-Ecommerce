@@ -4,12 +4,14 @@ import summaryApi from "../common";
 import Context from "../context";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import {loadStripe} from '@stripe/stripe-js';
+import { loadStripe } from "@stripe/stripe-js";
 import displayCurrency from "../helpers/displayCurrency";
+import Loader from "../assets/loader.gif"
 
 const Cart = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [buttonText, setButtonText] = useState(false);
   const context = useContext(Context);
   const loadinProduct = new Array(context?.cartProductCount).fill(null);
 
@@ -119,8 +121,10 @@ const Cart = () => {
   }, 0);
 
   const handlePayment = async () => {
-
-    const stripePromise = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHED_KEY)
+    setButtonText(true);
+    const stripePromise = await loadStripe(
+      process.env.REACT_APP_STRIPE_PUBLISHED_KEY
+    );
     const response = await fetch(summaryApi.payment.url, {
       method: summaryApi.payment.method,
       credentials: "include",
@@ -132,13 +136,14 @@ const Cart = () => {
       }),
     });
 
-    const responseData = await response.json()
+    const responseData = await response.json();
 
-    if(responseData?.data?.id){
-      stripePromise.redirectToCheckout({ sessionId: responseData?.data?.id })
+    if (responseData?.data?.id) {
+      stripePromise.redirectToCheckout({ sessionId: responseData?.data?.id });
     }
-
-    console.log(responseData)
+    
+    // setButtonText(false);
+    console.log(responseData);
   };
   return (
     <div className="conatiner mx-auto p-2 mb-2 lg:mb-5 md:pl-10 md:pr-10">
@@ -281,12 +286,22 @@ const Cart = () => {
                     <p className="text-sm text-gray-700">including GST</p>
                   </div>
                 </div>
-                <button
-                  onClick={handlePayment}
-                  className="mt-6 w-full rounded-md bg-indigo-500 py-1.5 font-medium text-white hover:bg-indigo-600"
-                >
-                  Check out
-                </button>
+                {buttonText ? (
+                  <button
+                    disabled
+                    className="mt-6 w-full rounded-md relative bg-indigo-500 py-1.5 font-medium text-white"
+                  >
+                    <span>Processing...</span>
+                    <img src={Loader} className="w-4 h-4 absolute top-[0.6rem] right-4" alt="loader"/>
+                  </button>
+                ) : (
+                  <button
+                    onClick={handlePayment}
+                    className="mt-6 w-full rounded-md bg-indigo-500 py-1.5 font-medium text-white hover:bg-indigo-600"
+                  >
+                    Check Out
+                  </button>
+                )}
               </div>
             )}
           </div>

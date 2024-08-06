@@ -14,6 +14,8 @@ import SearchProduct from "../pages/SearchProduct";
 import Profile from "../pages/Profile";
 import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
+import Dashboard from "../pages/Dashboard";
+import ResetPassword from "../pages/ResetPassword";
 
 const router = createBrowserRouter([
     {
@@ -31,6 +33,10 @@ const router = createBrowserRouter([
             {
                 path: "forgot-password",
                 element: <ForgotPassword />
+            },
+            {
+                path: "password-reset/:userId/:token",
+                element: <ResetPassword />
             },
             {
                 path: "signup",
@@ -68,6 +74,10 @@ const router = createBrowserRouter([
                 path: "admin-panel",
                 element: <AdminPanel />,
                 children: [
+                    {
+                        path: "admin-dashboard",
+                        element: <Dashboard />
+                    },
                     {
                         path: "all-users",
                         element: <AllUsers />
