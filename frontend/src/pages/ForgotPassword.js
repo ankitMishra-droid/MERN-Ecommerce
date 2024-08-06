@@ -29,6 +29,7 @@ const ForgotPassword = () => {
         toast(responseData.message);
       } else {
         setMessage(responseData.message);
+        setButtonText(false);
         toast(responseData.message);
       }
     } catch (error) {
@@ -76,7 +77,6 @@ const ForgotPassword = () => {
             </button>
           ) : (
             <button
-              // onClick={handleSubmit}
               className="w-full rounded-md bg-indigo-500 py-1.5 font-medium text-white hover:bg-indigo-600"
             >
               Reset Password
@@ -84,7 +84,7 @@ const ForgotPassword = () => {
           )}
         </div>
       </form>
-      {message && <p className="mt-5 text-xl bg-orange-300 px-2">sent: {message}</p>}
+      {/* {message && <p className="mt-5 text-xl bg-orange-300 px-2">sent: {message}</p>} */}
     </div>
   );
 };
