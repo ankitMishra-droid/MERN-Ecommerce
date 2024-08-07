@@ -14,7 +14,7 @@ const addToCartProduct = asyncHandler( async(req, res) => {
         const isProductAvailabel = await AddToCart.findOne({ productId, userId: currentUser })
 
         if(isProductAvailabel){
-            res.json({
+            return res.json({
                 message: "Already existed in cart!",
                 error: true,
                 success: false
