@@ -1,21 +1,21 @@
-.customShadow{
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+.customShadow {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* user table */
-.userTable{
-    @apply bg-white
+.userTable {
+  @apply bg-white;
 }
 
-.userTable th{
-    @apply border text-base font-medium
+.userTable th {
+  @apply border text-base font-medium;
 }
 
-.userTable td{
-    @apply border text-base text-center
+.userTable td {
+  @apply border text-base text-center;
 }
 
-.scrollbar-none::-webkit-scrollbar{
+.scrollbar-none::-webkit-scrollbar {
   display: none;
 }
 
@@ -29,14 +29,11 @@
   box-sizing: border-box;
 }
 .btn-24 {
-  -webkit-tap-highlight-color: 
-transparent;
+  -webkit-tap-highlight-color: transparent;
   -webkit-appearance: button;
-  background-color: 
-#000;
+  background-color: #000;
   background-image: none;
-  color: 
-#fff;
+  color: #fff;
   cursor: pointer;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
@@ -63,8 +60,7 @@ transparent;
   display: none;
 }
 .btn-24 {
-  --background: 
-#000;
+  --background: #000;
   background: none;
   overflow: hidden;
   padding: 0.8rem 2rem;
@@ -78,8 +74,7 @@ transparent;
 .btn-24:after,
 .btn-24:before {
   --tilt: 20px;
-  background: 
-#fff;
+  background: #fff;
   -webkit-clip-path: polygon(0 0, 100% 0, 100% 50%, 100% 100%, 0 100%);
   clip-path: polygon(0 0, 100% 0, 100% 50%, 100% 100%, 0 100%);
   content: "";
@@ -121,4 +116,20 @@ transparent;
     calc(100% - var(--tilt)) 100%,
     0 100%
   );
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

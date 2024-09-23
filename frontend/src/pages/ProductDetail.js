@@ -20,12 +20,12 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(false);
   const productListLoading = new Array(4).fill(null);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [activeImage, setActiveImage] = useState("");
   const [moveZoomImage, setMoveZoomImage] = useState("0% 0%");
   const [zoomedImage, setZoomedImage] = useState(false);
 
-  const { fetchAddToCartCount } = useContext(Context)
+  const { fetchAddToCartCount } = useContext(Context);
 
   const handleZoomImage = (e) => {
     const { top, left, width, height } = e.target.getBoundingClientRect();
@@ -59,17 +59,17 @@ const ProductDetail = () => {
     setActiveImage(imageUrl);
   };
 
-  const handleAddToCart = async(e, id) => {
-    await addToCart(e, id)
-    fetchAddToCartCount()
-    navigate("/cart")
-  }
+  const handleAddToCart = async (e, id) => {
+    await addToCart(e, id);
+    fetchAddToCartCount();
+    navigate("/cart");
+  };
 
-  const handleBuy = async(e, id) => {
-    await addToCart(e, id)
-    fetchAddToCartCount()
-    navigate("/cart")
-  }
+  const handleBuy = async (e, id) => {
+    await addToCart(e, id);
+    fetchAddToCartCount();
+    navigate("/cart");
+  };
 
   useEffect(() => {
     fetchProductDetails();
@@ -181,10 +181,16 @@ const ProductDetail = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-3 my-2">
-                <button className="border-2 border-gray-950 rounded px-3 py-1 w-full md:min-w-[120px] font-medium hover:bg-black hover:text-white transition-all" onClick={(e) => handleBuy(e, data?._id)}>
+                <button
+                  className="border-2 border-gray-950 rounded px-3 py-1 w-full md:min-w-[120px] font-medium hover:bg-black hover:text-white transition-all"
+                  onClick={(e) => handleBuy(e, data?._id)}
+                >
                   Buy Now
                 </button>
-                <button className="border-2 border-gray-950 rounded px-3 py-1 w-full md:min-w-[120px] font-medium bg-black text-white hover:bg-white hover:text-black transition-all" onClick={(e) => handleAddToCart(e, data?._id)}>
+                <button
+                  className="border-2 border-gray-950 rounded px-3 py-1 w-full md:min-w-[120px] font-medium bg-black text-white hover:bg-white hover:text-black transition-all"
+                  onClick={(e) => handleAddToCart(e, data?._id)}
+                >
                   Add To Cart
                 </button>
               </div>
@@ -200,15 +206,15 @@ const ProductDetail = () => {
       </div>
 
       {/* recommended product section started */}
-        {data.category && (
-          <div>
-            <CategroyWiseProduct
-              category={data?.category}
-              heading={"Recommended Products"}
-            />
-          </div>
-        )}
-        {/* recommended product section ended */}
+      {data.category && (
+        <div>
+          <CategroyWiseProduct
+            category={data?.category}
+            heading={"Recommended Products"}
+          />
+        </div>
+      )}
+      {/* recommended product section ended */}
     </>
   );
 };

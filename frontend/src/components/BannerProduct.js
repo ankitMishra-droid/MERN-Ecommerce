@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import banner1 from "../assets/banner/boat.webp";
 import banner2 from "../assets/banner/watch.webp";
 import banner3 from "../assets/banner/realme.jpg";
@@ -9,8 +9,8 @@ import banner2Mobile from "../assets/banner/boat_mobile.webp";
 import banner3Mobile from "../assets/banner/hadphone_mobile.jpg";
 import banner4Mobile from "../assets/banner/tv_mobile.jpg";
 
-import { FaChevronLeft } from "react-icons/fa6";
-import { FaChevronRight } from "react-icons/fa6";
+// import { FaChevronLeft } from "react-icons/fa6";
+// import { FaChevronRight } from "react-icons/fa6";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";

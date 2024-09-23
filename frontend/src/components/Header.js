@@ -35,8 +35,8 @@ const Header = () => {
       const dataRes = await res.json();
 
       if (dataRes.success) {
-        localStorage.removeItem("authToken")
-        sessionStorage.removeItem("authToken")
+        localStorage.removeItem("authToken");
+        sessionStorage.removeItem("authToken");
         toast.success(dataRes.message);
         dispatch(setUserDetails(null));
       }
@@ -49,16 +49,21 @@ const Header = () => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
   const handleSearch = (e) => {
-    const { value } = e.target;
-    setSearch(value);
-    if (value) {
-      navigate(`/search?q=${value}`);
+    // const { value } = e.target;
+    // setSearch(value);
+    e.preventDefault();
+    if (search) {
+      navigate(`/search?q=${search}`);
     } else {
       navigate(`/search`);
     }
   };
-  
+
   return (
     <header className="h-16 shadow-md bg-white fixed w-full z-30">
       <div className="h-full container mx-auto flex items-center px-4 justify-between sticky">
@@ -73,10 +78,10 @@ const Header = () => {
             type="text"
             className="w-full outline-none"
             placeholder="search product here..."
-            onChange={handleSearch}
+            onChange={handleSearchChange}
             value={search}
           />
-          <div className="text-lg min-w-[50px] h-8 bg-gray-900 flex items-center justify-center rounded-r-full text-white cursor-pointer">
+          <div className="text-lg min-w-[50px] h-8 bg-gray-900 flex items-center justify-center rounded-r-full text-white cursor-pointer" onClick={handleSearch}>
             <GrSearch />
           </div>
         </div>
