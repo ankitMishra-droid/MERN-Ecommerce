@@ -1,26 +1,29 @@
-import { asyncHandler } from "../../utils/asyncHandler.js"
-import { ApiError } from "../../utils/ApiError.js"
-import { ApiResponse } from "../../utils/ApiResponse.js"
-import { Product } from "../../models/product.model.js"
+import { asyncHandler } from "../../utils/asyncHandler.js";
+import { ApiResponse } from "../../utils/ApiResponse.js";
+import { Product } from "../../models/product.model.js";
 
-const filterProduct = asyncHandler( async(req, res) => {
+const filterProduct = asyncHandler(async (req, res) => {
+    const { category: categoryList } = req.body;
+
+    if (!categoryList || !Array.isArray(categoryList)) {
+        return res.status(400).json(
+            new ApiResponse(400, null, "Invalid or missing category list")
+        );
+    }
+
     try {
-        const categoryList = req?.body?.category
-
-        const product = await Product.find({
-            category : {
-                "$in" : categoryList
-            }
-        })
+        const products = await Product.find({
+            category: { "$in": categoryList }
+        });
 
         return res.status(200).json(
-            new ApiResponse(201, product, "Category Filtered!")
-        )
+            new ApiResponse(200, products, "Categories filtered successfully")
+        );
     } catch (error) {
-        res.status(400).json(
-            new ApiError(401, 'somthing went wrong', error?.message || error)
-        )
+        return res.status(500).json(
+            new ApiResponse(500, null, error.message || "Something went wrong")
+        );
     }
-})
+});
 
-export default filterProduct
+export default filterProduct;

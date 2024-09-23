@@ -110,6 +110,32 @@ const getCategoryProduct = asyncHandler( async(req, res) => {
     }
 })
 
+// const getCategoryProduct = asyncHandler(async (req, res) => {
+//     try {
+//         const productByCategory = await Product.aggregate([
+//             {
+//                 $group: {
+//                     _id: "$category",
+//                     product: { $first: "$$ROOT" }
+//                 }
+//             },
+//             {
+//                 $replaceRoot: { newRoot: "$product" }
+//             }
+//         ]);
+
+//         return res.status(200).json(
+//             new ApiResponse(200, productByCategory, "Category product list")
+//         );
+//     } catch (error) {
+//         res.status(500).json({
+//             message: error.message || "Something went wrong",
+//             error: true,
+//             success: false
+//         });
+//     }
+// });
+
 const getCategoryWiseProduct = asyncHandler( async(req, res) => {
     try {
         const { category } = req?.body || req?.query

@@ -196,15 +196,15 @@ const loginUser = asyncHandler(async (req, res) => {
     const { accessToken, refreshToken } =
       await generateAccessTokenAndRefreshToken(user._id);
 
-    console.log(accessToken)
+    // console.log(accessToken)
     const loggedInUser = await User.findById(user?._id).select(
       "-password -refreshToken"
     );
 
     const options = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // set to true in production
-      sameSite: 'None'
+      secure: process.env.HTTP_SECURE === "production", // Set secure only in production
+      sameSite: process.env.HTTP_SAME_SITE === "production" ? "None" : "Lax", // Allow cross-site cookies in production
     };
 
     return res
@@ -274,7 +274,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Unauthorized request");
   }
 
-  console.log("Incoming Refresh Token:", incomingRefreshToken);
+  // console.log("Incoming Refresh Token:", incomingRefreshToken);
 
   try {
     const decodedToken = jwt.verify(
@@ -282,7 +282,6 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       process.env.REFRESH_TOKEN_SECRET
     );
 
-    console.log("Decoded Token:", decodedToken);
     const user = await User.findById(decodedToken?._id);
 
     if (!user) {
@@ -400,8 +399,6 @@ const forgotPasswordLink = asyncHandler( async(req, res) => {
       throw new Error("Invalid email format");
     }
 
-    console.log(email)
-
     const user = await User.findOne({email});
 
     if(!user){
@@ -474,6 +471,7 @@ const userPasswordReset = asyncHandler( async(req, res) => {
     })
   }
 })
+
 export {
   registerUser,
   loginUser,
