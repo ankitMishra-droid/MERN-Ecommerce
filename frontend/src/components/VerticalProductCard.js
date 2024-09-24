@@ -15,15 +15,15 @@ const VerticalProductCard = ({ loading, data = [] }) => {
   };
   return (
     <div>
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,320px))] justify-center md:justify-between md:gap-6 overflow-x-scroll scrollbar-none transition-all">
+      <div className="grid grid-cols-1 sm:grid-cols-2 min-[490px]:grid-cols-2 xl:grid-cols-3 gap-4 gap-y-6 justify-center md:justify-between md:gap-6 overflow-x-scroll scrollbar-none transition-all">
         {loading
           ? loadingList.map((product, index) => {
               return (
                 <div
-                  className="w-full min-w-[280px]  md:min-w-[320px] max-w-[280px] md:max-w-[320px]  bg-white rounded-sm shadow "
+                  className="w-full bg-white rounded-sm shadow "
                   key={product + index}
                 >
-                  <div className="bg-slate-200 h-48 p-4 min-w-[280px] md:min-w-[145px] flex justify-center items-center animate-pulse"></div>
+                  <div className="bg-slate-200 h-48 p-4 flex justify-center items-center animate-pulse"></div>
                   <div className="p-4 grid gap-3">
                     <p className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black p-1 py-2 animate-pulse rounded-full bg-slate-200"></p>
                     <p className="capitalize text-slate-500 p-1 animate-pulse rounded-full bg-slate-200  py-2"></p>
@@ -40,7 +40,7 @@ const VerticalProductCard = ({ loading, data = [] }) => {
               return (
                 <Link
                   to={"/product/" + product?._id}
-                  className="w-full min-w-[280px]  md:min-w-[320px] max-w-[280px] md:max-w-[320px]  bg-white rounded-sm shadow "
+                  className="w-full bg-white rounded-sm shadow "
                   key={product?.productName + index}
                   onClick={ScrollToTop}
                 >
@@ -74,15 +74,15 @@ const VerticalProductCard = ({ loading, data = [] }) => {
                     </button>
                   </div> */}
 
-                  <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                  <div class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                     <Link to="#">
                       <img
-                        class="p-8 rounded-t-lg"
+                        class="p-2 h-48 rounded-t-lg mx-auto"
                         src={product.productImg[0]}
                         alt={product?.productImg}
                       />
                     </Link>
-                    <div class="px-5 pb-5">
+                    <div class="px-3 pb-5">
                       <a href="#">
                         <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
                           {product?.productName}
@@ -140,8 +140,8 @@ const VerticalProductCard = ({ loading, data = [] }) => {
                           5.0
                         </span>
                       </div>
-                      <div class="flex items-center justify-between">
-                        <span class="text-3xl font-bold text-gray-900 dark:text-white">
+                      <div class="flex flex-col md:flex-row md:items-center justify-between">
+                        <span class="text-xl flex flex-row md:flex-col justify-between font-bold text-gray-900 dark:text-white">
                           <p className="text-slate-600 font-medium">
                             {displayCurrency(product?.selling)}
                           </p>
@@ -151,7 +151,7 @@ const VerticalProductCard = ({ loading, data = [] }) => {
                         </span>
                         <button
                           onClick={(e) => handleCountUpdate(e, product?._id)}
-                          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          class="text-white mt-3 md:mt-0 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
                           Add to cart
                         </button>

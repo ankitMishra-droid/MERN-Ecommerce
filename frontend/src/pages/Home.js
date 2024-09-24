@@ -5,7 +5,7 @@ import HorizontalCardProduct from '../components/HorizontalCardProduct'
 
 const Home = () => {
   return (
-    <div className='pl-8 pr-8 py-5 container block mx-auto'>
+    <div className='pl-4 pr-4 md:pl-8 md:pr-8 py-5 container block mx-auto'>
       <HomeProduct />
       <BannerProduct />
       <HorizontalCardProduct category={"airpods"} heading={"Top Deals on Airbuds"}/>
