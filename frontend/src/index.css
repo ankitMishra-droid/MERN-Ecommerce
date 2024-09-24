@@ -16,3 +16,16 @@ body{
     @apply bg-slate-100;
     background-color: #eeeeee;
 }
+
+.logo{
+    display: inline-block;
+    background: transparent;
+    background-color: #321232;
+    background-image: url("./assets/favicon-32x32.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+}
