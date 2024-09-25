@@ -14,7 +14,7 @@ const Success = () => {
         //   width={150}
         //   height={150}
         />
-        <Link to={"/"} className="p-2 px-3 mt-5 border-2 border-sky-600 text-sky-600 font-semibold hover:bg-sky-600 hover:text-white transition-all">See Orders</Link>
+        <Link to={"/orders"} className="p-2 px-3 mt-5 border-2 border-sky-600 text-sky-600 font-semibold hover:bg-sky-600 hover:text-white transition-all">See Orders</Link>
       </div>
     </div>
   );

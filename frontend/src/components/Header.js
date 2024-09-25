@@ -81,7 +81,10 @@ const Header = () => {
             onChange={handleSearchChange}
             value={search}
           />
-          <div className="text-lg min-w-[50px] h-8 bg-gray-900 flex items-center justify-center rounded-r-full text-white cursor-pointer" onClick={handleSearch}>
+          <div
+            className="text-lg min-w-[50px] h-8 bg-gray-900 flex items-center justify-center rounded-r-full text-white cursor-pointer"
+            onClick={handleSearch}
+          >
             <GrSearch />
           </div>
         </div>
@@ -116,6 +119,14 @@ const Header = () => {
                         className="whitespace-nowrap hover:text-orange-500"
                       >
                         Admin Panel
+                      </Link>
+                    )}
+                    {user && (
+                      <Link
+                        to={"/orders"}
+                        className="whitespace-nowrap hover:text-orange-500"
+                      >
+                        Orders
                       </Link>
                     )}
                     <Link

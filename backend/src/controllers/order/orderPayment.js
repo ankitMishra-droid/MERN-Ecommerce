@@ -23,6 +23,9 @@ const orderPayment = asyncHandler(async (req, res) => {
         },
       ],
       customer_email: user.email,
+      metadata: {
+        userId : String(req.user._id)
+      },
       line_items: cartItems.map((item, index) => {
         return {
           price_data: {

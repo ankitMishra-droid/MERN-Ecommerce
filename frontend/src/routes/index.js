@@ -16,6 +16,7 @@ import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
 import Dashboard from "../pages/Dashboard";
 import ResetPassword from "../pages/ResetPassword";
+import OrderPage from "../pages/OrderPage";
 
 const router = createBrowserRouter([
     {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
             {
                 path: "search",
                 element: <SearchProduct />
+            },
+            {
+                path: "orders",
+                element: <OrderPage />
             },
             {
                 path: "my-account",

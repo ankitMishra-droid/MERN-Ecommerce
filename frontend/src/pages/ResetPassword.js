@@ -57,7 +57,7 @@ const ResetPassword = () => {
             required
           />
         </div> */}
-        <div class="grid gap-6 content-center justify-center mb-2">
+        <div className="grid gap-6 content-center justify-center mb-2">
           <div>
             <label
               htmlFor="password"

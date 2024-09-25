@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { loadStripe } from "@stripe/stripe-js";
 import displayCurrency from "../helpers/displayCurrency";
-import Loader from "../assets/loader.gif"
+import Loader from "../assets/loader.gif";
 
 const Cart = () => {
   const [data, setData] = useState([]);
@@ -141,7 +141,6 @@ const Cart = () => {
     if (responseData?.data?.id) {
       stripePromise.redirectToCheckout({ sessionId: responseData?.data?.id });
     }
-    
     // setButtonText(false);
     console.log(responseData);
   };
@@ -292,7 +291,11 @@ const Cart = () => {
                     className="mt-6 w-full rounded-md relative bg-indigo-500 py-1.5 font-medium text-white"
                   >
                     <span>Processing...</span>
-                    <img src={Loader} className="w-4 h-4 absolute top-[0.6rem] right-4" alt="loader"/>
+                    <img
+                      src={Loader}
+                      className="w-4 h-4 absolute top-[0.6rem] right-4"
+                      alt="loader"
+                    />
                   </button>
                 ) : (
                   <button

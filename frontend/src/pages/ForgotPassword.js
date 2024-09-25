@@ -42,7 +42,7 @@ const ForgotPassword = () => {
         {/* <div className='bg-slate-100 p-2'>
           <input type="email" name='email' placeholder='enter email' id='email' className='w-full h-full outline-none bg-transparent p-2 border-black' value={email} onChange={(e) => setEmail(e.target.value)}/>
         </div> */}
-        <div class="grid gap-6 content-center justify-center  mb-6">
+        <div className="grid gap-6 content-center justify-center  mb-6">
           <div>
             <label
               htmlFor="email"

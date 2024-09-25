@@ -105,7 +105,7 @@ const HomeProductCategory = () => {
             <h3 className="text-base uppercase text-violet-600 font-medium pb-1 cursor-pointer" onClick={() => setSortedFilter((prev) => !prev)}>
               Sort By{" "}
               <span>
-                <i class="fa-solid fa-sort"></i>
+                <i className="fa-solid fa-sort"></i>
               </span>
             </h3>
             {!sortedFilter && (
@@ -142,7 +142,7 @@ const HomeProductCategory = () => {
             >
               Category{" "}
               <span>
-                <i class="fa-solid fa-filter"></i>
+                <i className="fa-solid fa-filter"></i>
               </span>
             </h3>
             {mobileFiltersOpen && (
