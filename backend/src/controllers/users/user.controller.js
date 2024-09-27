@@ -96,121 +96,47 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 // login user
-// const loginUser = asyncHandler( async(req, res) => {
-
-//     try {
-
-//         const {email, password} = req.body;
-
-//         if(!email){
-//             throw new Error("please enter valid email")
-//         }
-
-//         if(!password){
-//             throw new Error("please enter password")
-//         }
-
-//         const user = await User.findOne({email})
-
-//         if(!user){
-//             throw new Error("User doesn't exist!")
-//         }
-
-//         const isPasswordValid = await user.isPasswordCorrect(password)
-
-//         if(!isPasswordValid){
-//             throw new Error("Password was wrong")
-//         }
-
-//         const {accessToken, refreshToken} = await generateAccessTokenAndRefreshToken(user._id)
-
-//         const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
-
-//         const option = {
-//             httpOnly: true,
-//             secure: process.env.NODE_ENV === 'production', // set to true in production
-// sameSite: 'None'
-//         }
-
-//         return res
-//         .status(200)
-//         .cookie("accessToken", accessToken, option)
-//         .cookie("refreshToken", refreshToken, option)
-//         .json(
-//             new ApiResponse(
-//                 200,
-//                 {
-//                     user: loggedInUser, accessToken, refreshToken
-//                 },
-//                 "Login Successfully!"
-//             )
-//         )
-//     } catch (error) {
-//         res.json({
-//             message: error.message || error,
-//             error: true,
-//             success: false
-//         })
-//     }
-// })
 const loginUser = asyncHandler(async (req, res) => {
   try {
     const { email, password } = req.body;
 
     if (!email) {
-      return res.status(400).json({
-        message: "Please enter a valid email",
-        error: true,
-        success: false,
-      });
+      throw new Error("please enter valid email");
     }
 
     if (!password) {
-      return res.status(400).json({
-        message: "Please enter password",
-        error: true,
-        success: false,
-      });
+      throw new Error("please enter password");
     }
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({
-        message: "User doesn't exist!",
-        error: true,
-        success: false,
-      });
+      throw new Error("User doesn't exist!");
     }
 
     const isPasswordValid = await user.isPasswordCorrect(password);
 
     if (!isPasswordValid) {
-      return res.status(401).json({
-        message: "Password was wrong",
-        error: true,
-        success: false,
-      });
+      throw new Error("Password was wrong");
     }
 
     const { accessToken, refreshToken } =
       await generateAccessTokenAndRefreshToken(user._id);
 
-    // console.log(accessToken)
-    const loggedInUser = await User.findById(user?._id).select(
+    const loggedInUser = await User.findById(user._id).select(
       "-password -refreshToken"
     );
 
-    const options = {
+    const option = {
       httpOnly: true,
-      secure: process.env.HTTP_SECURE === "production", // Set secure only in production
-      sameSite: process.env.HTTP_SAME_SITE === "production" ? "None" : "Lax", // Allow cross-site cookies in production
+      secure: process.env.NODE_ENV === "production", // set to true in production
+      sameSite: "None",
     };
 
     return res
       .status(200)
-      .cookie("accessToken", accessToken, options)
-      .cookie("refreshToken", refreshToken, options)
+      .cookie("accessToken", accessToken, option)
+      .cookie("refreshToken", refreshToken, option)
       .json(
         new ApiResponse(
           200,
@@ -223,13 +149,91 @@ const loginUser = asyncHandler(async (req, res) => {
         )
       );
   } catch (error) {
-    return res.status(500).json({
+    res.json({
       message: error.message || error,
       error: true,
       success: false,
     });
   }
 });
+
+// const loginUser = asyncHandler(async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+
+//     if (!email) {
+//       return res.status(400).json({
+//         message: "Please enter a valid email",
+//         error: true,
+//         success: false,
+//       });
+//     }
+
+//     if (!password) {
+//       return res.status(400).json({
+//         message: "Please enter password",
+//         error: true,
+//         success: false,
+//       });
+//     }
+
+//     const user = await User.findOne({ email });
+
+//     if (!user) {
+//       return res.status(404).json({
+//         message: "User doesn't exist!",
+//         error: true,
+//         success: false,
+//       });
+//     }
+
+//     const isPasswordValid = await user.isPasswordCorrect(password);
+
+//     if (!isPasswordValid) {
+//       return res.status(401).json({
+//         message: "Password was wrong",
+//         error: true,
+//         success: false,
+//       });
+//     }
+
+//     const { accessToken, refreshToken } =
+//       await generateAccessTokenAndRefreshToken(user._id);
+
+//     // console.log(accessToken)
+//     const loggedInUser = await User.findById(user?._id).select(
+//       "-password -refreshToken"
+//     );
+
+//     const options = {
+//       httpOnly: true,
+//       secure: process.env.HTTP_SECURE === "production", // Set secure only in production
+//       sameSite: process.env.HTTP_SAME_SITE === "production" ? "None" : "Lax", // Allow cross-site cookies in production
+//     };
+
+//     return res
+//       .status(200)
+//       .cookie("accessToken", accessToken, options)
+//       .cookie("refreshToken", refreshToken, options)
+//       .json(
+//         new ApiResponse(
+//           200,
+//           {
+//             user: loggedInUser,
+//             accessToken,
+//             refreshToken,
+//           },
+//           "Login Successfully!"
+//         )
+//       );
+//   } catch (error) {
+//     return res.status(500).json({
+//       message: error.message || error,
+//       error: true,
+//       success: false,
+//     });
+//   }
+// });
 
 // logout user
 const logoutUser = asyncHandler(async (req, res) => {
@@ -386,11 +390,11 @@ const updateDetails = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, updateUser, "User Details Updated!"));
 });
 
-const forgotPasswordLink = asyncHandler( async(req, res) => {
+const forgotPasswordLink = asyncHandler(async (req, res) => {
   try {
     const { email } = req.body;
 
-    if (typeof email !== 'string' || !email.trim()) {
+    if (typeof email !== "string" || !email.trim()) {
       throw new Error("Invalid email format"); // Ensure email is a string
     }
 
@@ -399,78 +403,84 @@ const forgotPasswordLink = asyncHandler( async(req, res) => {
       throw new Error("Invalid email format");
     }
 
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });
 
-    if(!user){
-      throw new Error('user not existed.');
+    if (!user) {
+      throw new Error("user not existed.");
     }
 
-    let token = await Token.findOne({ userId: user?._id});
+    let token = await Token.findOne({ userId: user?._id });
 
-    if(!token){ 
+    if (!token) {
       token = await new Token({
         userId: user?._id,
         token: crypto.randomBytes(32).toString("hex"),
-      }).save()
+      }).save();
     }
 
     const link = `${process.env.CORS_ORIGIN}/password-reset/${user?._id}/${token.token}`;
     // await sendMail(user.email, `reset-password-link ' e-shop'`, link)
-    await sendMail(email, `reset-password-link ' e-shop'`, `${link}\n click to the link reset password`)
+    await sendMail(
+      email,
+      `reset-password-link ' e-shop'`,
+      `${link}\n click to the link reset password`
+    );
 
-    return res.status(200).json(
-      new ApiResponse(201, token, "password reset link sent to your email account")
-    )
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          201,
+          token,
+          "password reset link sent to your email account"
+        )
+      );
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(400).json({
       message: error?.message || error,
       error: true,
-      success: false
-    })
+      success: false,
+    });
   }
 });
 
-const userPasswordReset = asyncHandler( async(req, res) => {
+const userPasswordReset = asyncHandler(async (req, res) => {
   try {
-
     const user = await User.findById(req.params.userId);
     // const user = await User.findById(req.user?._id);
 
-    if(!user){
-      throw new Error("invalid link or expired")
+    if (!user) {
+      throw new Error("invalid link or expired");
     }
 
     const token = await Token.findOne({
       userId: user?._id,
       token: req.params.token,
       // token: req.token.token,
+    });
 
-
-    })
-
-    if(!token){
-      throw new Error("invalid link or expired")
+    if (!token) {
+      throw new Error("invalid link or expired");
     }
 
     user.password = req.body.password;
 
-    await user.save()
-    await token.deleteOne()
+    await user.save();
+    await token.deleteOne();
 
-    return res.status(200).json(
-      new ApiResponse(201, token, "password reset successfully.")
-    )
-
+    return res
+      .status(200)
+      .json(new ApiResponse(201, token, "password reset successfully."));
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(400).json({
       message: error?.message || error,
       error: true,
-      success: false
-    })
+      success: false,
+    });
   }
-})
+});
 
 export {
   registerUser,
@@ -481,5 +491,5 @@ export {
   getCuurentUser,
   updateDetails,
   forgotPasswordLink,
-  userPasswordReset
+  userPasswordReset,
 };

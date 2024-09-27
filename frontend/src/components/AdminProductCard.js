@@ -7,14 +7,14 @@ const AdminProductCard = ({ data, fetchdata }) => {
     const [editProduct, setEditProduct] = useState(false)
   return (
     <div className='bg-gray-200 p-4 rounded'>
-        <div className='w-44 relative'>
+        <div className='w-full pl-10 pr-10 sm:pl-0 sm:pr-0 sm:w-48 relative '>
             <div className='w-32 h-32 flex justify-center items-center mx-auto'>
-                <img src={data?.productImg[0]} className='object-fill h-full mx-auto' alt="productImage"/>
+                <img src={data?.productImg[0]} className='object-fill h-full mx-auto mix-blend-multiply' alt="productImage"/>
             </div>
-                <h1 className='text-ellipsis line-clamp-2 break-words'>{data?.productName}</h1>
+                <h1 className='text-ellipsis line-clamp-2 break-words mt-4'>{data?.productName}</h1>
 
             <div>
-                <div className='flex items-center gap-2'>
+                <div className='flex items-center gap-2 mt-4'>
                     <p className='font-semibold'>
                         {
                             displayCurrency(data?.selling)
@@ -26,7 +26,7 @@ const AdminProductCard = ({ data, fetchdata }) => {
                         }
                     </p>
                 </div>
-                <p>
+                <p className='mt-4 line-clamp-3'>
                     {
                         data?.productDescription
                     }

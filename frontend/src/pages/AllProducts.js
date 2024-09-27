@@ -40,7 +40,7 @@ const AllProducts = () => {
       )
     }
     {/* display all product */}
-    <div className='flex items-center flex-wrap h-[calc(100vh-190px)] gap-5 py-5 overflow-y-scroll'>
+    <div className='flex justify-center items-center flex-wrap h-[calc(100vh-190px)] gap-5 py-5 overflow-y-scroll'>
       {
         allProduct.map((product, index) => {
           return(

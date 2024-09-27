@@ -4,8 +4,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import fetchCategorywiseProduct from "../helpers/fetchCategorywiseProduct";
 import displayCurrency from "../helpers/displayCurrency";
 
-import { FaChevronLeft } from "react-icons/fa6";
-import { FaChevronRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import addToCart from "../helpers/addToCart";
 import Context from "../context";
@@ -25,9 +23,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
-
-// import required modules
-import { Pagination } from "swiper/modules";
 
 const HorizontalCardProduct = ({ category, heading }) => {
   const [data, setData] = useState([]);
@@ -49,14 +44,6 @@ const HorizontalCardProduct = ({ category, heading }) => {
     const categoryProduct = await fetchCategorywiseProduct(category);
     setLoading(false);
     setData(categoryProduct?.data);
-  };
-
-  const nextProduct = () => {
-    scrollElement.current.scrollLeft += 300;
-  };
-
-  const prevProduct = () => {
-    scrollElement.current.scrollLeft -= 300;
   };
 
   useEffect(() => {
@@ -209,7 +196,7 @@ const HorizontalCardProduct = ({ category, heading }) => {
                               <div className="flex justify-between p-3">
                                 <p className="lead mb-0">{}</p>
                                 <div
-                                  className="bg-slate-500 rounded-full flex items-center justify-center"
+                                  className="bg-orange-500 rounded-full flex items-center justify-center"
                                   style={{ width: "35px", height: "35px" }}
                                 >
                                   <p className="text-white mb-0 text-xs">
@@ -246,11 +233,12 @@ const HorizontalCardProduct = ({ category, heading }) => {
                                   <h5 className="text-dark mt-1 mb-0 pl-[2px] font-bold sm:mt-0">{displayCurrency(product?.selling)}</h5>
                                 </div>
 
-                                <div class="flex justify-between mb-2">
-                                  <p class="text-muted mb-0">
-                                    Available: <span class="fw-bold">6</span>
+                                <div className="flex justify-between mb-2">
+                                  <p className="text-muted mb-0">
+                                    Available: 
+                                    {/* <span className="fw-bold">6</span> */}
                                   </p>
-                                  <div class="sm:ms-auto text-warning">
+                                  <div className="sm:ms-auto text-warning">
                                     <MDBIcon fas icon="star" />
                                     <MDBIcon fas icon="star" />
                                     <MDBIcon fas icon="star" />

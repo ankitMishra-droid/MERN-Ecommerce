@@ -15,6 +15,7 @@ import orderPayment from "../controllers/order/orderPayment.js";
 import deleteUser from "../controllers/users/deleteUserController.js";
 import webhooks from "../controllers/order/webhooks.js";
 import { orderController } from "../controllers/order/order.controller.js";
+import { contact } from "../controllers/users/contact.controller.js";
 
 const router = Router()
 
@@ -51,5 +52,8 @@ router.route("/checkout").post( verifyJwt, orderPayment)
 router.route("/webhook").post(webhooks)
 
 router.route("/order-list").get(verifyJwt, orderController)
+
+// conatct submission
+router.route("/contact").post(contact)
 
 export default router;

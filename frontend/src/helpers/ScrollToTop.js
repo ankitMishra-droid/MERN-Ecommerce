@@ -25,8 +25,8 @@ const ScrollToTop = () => {
 
   return (
     showScroll && (
-      <div className="fixed bottom-20 right-10 rounded-full z-[10000] bg-slate-600" onClick={handleScrollToTop}>
-        <button className="text-white">
+      <div className="fixed bottom-20 right-10 rounded-full z-[10000] bg-orange-600" onClick={handleScrollToTop}>
+        <button className="text-white p-[3px] rounded-full">
           <i className="fa-solid fa-arrow-up p-3"></i>
         </button>
       </div>

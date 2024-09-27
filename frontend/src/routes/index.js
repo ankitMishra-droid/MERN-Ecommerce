@@ -17,6 +17,8 @@ import Cancel from "../pages/Cancel";
 import Dashboard from "../pages/Dashboard";
 import ResetPassword from "../pages/ResetPassword";
 import OrderPage from "../pages/OrderPage";
+import Contact from "../pages/Contact";
+import About from "../pages/About";
 
 const router = createBrowserRouter([
     {
@@ -92,6 +94,14 @@ const router = createBrowserRouter([
                         element: <AllProducts />
                     }
                 ]
+            },
+            {
+                path: "contact-us",
+                element: <Contact />
+            },
+            {
+                path: "about-us",
+                element: <About />
             }
         ]
     }
