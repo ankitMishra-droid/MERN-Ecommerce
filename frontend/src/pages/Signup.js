@@ -207,6 +207,14 @@ const Signup = () => {
               Login
             </Link>
           </p>
+          <p className="my-3">
+            <Link
+                to={"/loginwithOtp"}
+                className="text-orange-500 hover:text-orange-600 hover:underline"
+              >
+                Login with OTP
+            </Link>
+          </p>
         </div>
       </div>
     </section>

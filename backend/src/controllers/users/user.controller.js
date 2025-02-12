@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import { Token } from "../../models/Token.models.js";
 import crypto from "crypto";
 import sendMail from "../../utils/sendEmail.js";
+import { sendOtp } from "../../middleware/twilio.js";
 
 const generateAccessTokenAndRefreshToken = async (userId) => {
   try {
@@ -92,6 +93,67 @@ const registerUser = asyncHandler(async (req, res) => {
         success: false,
       }
     );
+  }
+});
+
+// login via phone number
+const sendOtpOnPhone = asyncHandler(async (req, res) => {
+  const { phone } = req.body;
+  const otp = Math.floor(100000 + Math.random() * 900000);
+
+  try {
+      const user = await User.findOneAndUpdate(
+          { phone },
+          {
+              otp, 
+              otpExpiration: Date.now() + 600000
+          },
+          {
+              upsert: true, 
+              new: true
+          }
+      );
+
+      await sendOtp(phone, otp);
+
+      res.status(200).json(
+          new ApiResponse(200, user, "Otp Sent Successfully.")
+      );
+  } catch (error) {
+      return res.status(500).json({
+          message: error?.message || error,
+          error: true,
+          success: false
+      });
+  }
+});
+
+const verifyOtp = asyncHandler(async (req, res) => {
+  const { phone, otp } = req.body;
+
+  try {
+      const user = await User.findOne({ phone, otp });
+
+      if (!user || user.otpExpiration < Date.now()) {
+          return res.status(400).json({
+              message: "Invalid OTP.",
+              success: false
+          });
+      }
+
+      user.otp = undefined;
+      user.otpExpiration = undefined;
+      await user.save();
+
+      return res.status(200).json(
+          new ApiResponse(200, user, "OTP Verified.")
+      );
+  } catch (error) {
+      res.status(500).json({
+          message: error?.message || error,
+          error: true,
+          success: false
+      });
   }
 });
 
@@ -492,4 +554,6 @@ export {
   updateDetails,
   forgotPasswordLink,
   userPasswordReset,
+  sendOtpOnPhone,
+  verifyOtp
 };

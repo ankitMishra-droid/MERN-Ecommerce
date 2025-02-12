@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { upload } from "../middleware/multer.middleware.js";
-import { changePassword, forgotPasswordLink, getCuurentUser, loginUser, logoutUser, refreshAccessToken, registerUser, updateDetails, userPasswordReset } from "../controllers/users/user.controller.js";
+import { changePassword, forgotPasswordLink, getCuurentUser, loginUser, logoutUser, refreshAccessToken, registerUser, sendOtpOnPhone, updateDetails, userPasswordReset, verifyOtp } from "../controllers/users/user.controller.js";
 import { verifyJwt } from "../middleware/auth.middleware.js";
 import fetchAllUsers from "../controllers/users/allUsersController.js";
 import { getAllProducts, getCategoryProduct, getCategoryWiseProduct, getProductDetails, updateProductDetails, uploadProduct } from "../controllers/product/uploadProduct.controller.js";
@@ -29,6 +29,8 @@ router.route("/get-current-user").get(verifyJwt, getCuurentUser)
 router.route("/all-users").get(verifyJwt, fetchAllUsers)
 router.route("/send-reset-link").post(forgotPasswordLink)
 router.route("/:userId/:token").post(userPasswordReset)
+router.route("/sendOtp").post(sendOtpOnPhone)
+router.route("/verifyOtp").post(verifyOtp)
 
 // product details
 router.route("/upload-product").post(verifyJwt, uploadProduct)

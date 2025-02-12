@@ -19,6 +19,8 @@ import ResetPassword from "../pages/ResetPassword";
 import OrderPage from "../pages/OrderPage";
 import Contact from "../pages/Contact";
 import About from "../pages/About";
+import LoginWithOtp from "../pages/LoginWithOtp";
+import Phone from "../components/Phone";
 
 const router = createBrowserRouter([
     {
@@ -94,6 +96,10 @@ const router = createBrowserRouter([
                         element: <AllProducts />
                     }
                 ]
+            },
+            {
+                path: "/loginwithotp",
+                element: <Phone />
             },
             {
                 path: "contact-us",

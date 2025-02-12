@@ -32,6 +32,13 @@ const userModel = new Schema(
     addresses: {
       type: String,
     },
+    otp: {
+      type: String,
+      required: true
+    },
+    otpExpiration: {
+      type: String
+    },
     // addresses: {
     //     type: [Schema.Types.Mixed]
     // },
